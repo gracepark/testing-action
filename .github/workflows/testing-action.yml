@@ -1,0 +1,91 @@
+name: Update Audit Logs file
+
+# **What it does**: This updates our Audit Logs schema.
+# **Why we have it**: We want our Audit Logs up to date.
+# **Who does it impact**: Docs engineering, people reading Audit Logs.
+
+on:
+  workflow_dispatch:
+    inputs:
+        SOURCE_BRANCH:
+          description: 'Branch to pull the audit log source file from in the github/audit-log-allowlists repo.'
+          type: string
+          required: true
+          default: 'main'
+  schedule:
+    - cron: '20 18 * * *' # Run every day at 18:20 UTC / 10:20 PST
+
+permissions:
+  contents: write
+  pull-requests: write
+
+# **IMPORTANT:** Do not change the FREEZE environment variable set here!
+# This workflow runs on a recurring basis. To temporarily disable it (e.g.,
+# during a docs deployment freeze), add an Actions Secret to the repo settings
+# called `FREEZE` with a value of `true`. To re-enable Audit Logs updates, simply
+# delete that Secret from the repo settings. The environment variable here
+# will duplicate that Secret's value for later evaluation.
+env:
+  FREEZE: ${{ secrets.FREEZE }}
+
+jobs:
+  update_audit_logs_files:
+    if: github.repository == 'gracepark/testing-action'
+    runs-on: ubuntu-latest
+      - name: Checkout
+        uses: actions/checkout@8e5e7e5ab8b370d6c329ec480221332ada57f0ab
+
+      # Check out main branch of gracepark/remark-block-list
+      - name: Checkout gracepark/remark-block-list repo
+        uses: actions/checkout@8e5e7e5ab8b370d6c329ec480221332ada57f0ab
+        # By default, only the most recent commit of the `main` branch
+        # will be checked out
+        with:
+          repository: gracepark/remark-block-list repo
+          path: gracepark/remark-block-list/README.md
+          ref: 'main'
+
+      - uses: ./.github/actions/node-npm-setup
+
+      name: Get the remark-block-list SHA being synced
+        id: remark-block-list
+        run: |
+          cd remark-block-list
+          OPENAPI_COMMIT_SHA=$(git rev-parse HEAD)
+          echo "OPENAPI_COMMIT_SHA=$OPENAPI_COMMIT_SHA" >> $GITHUB_OUTPUT
+          echo "Copied files from gracepark/remark-block-list repo. Commit SHA: $OPENAPI_COMMIT_SHA"
+
+      - name: Run updater script
+        run: |
+          sync.js
+          git status
+          echo "Deleting the cloned gracepark/remark-block-list repo..."
+          rm -rf remark-block-list
+
+      - name: Check for changes
+        id: check-changes
+        run: |
+          # If nothing to commit, exit now. It's fine. No orphans.
+          changes=$(git diff --name-only | wc -l)
+          untracked=$(git status --untracked-files --short | wc -l)
+          if [[ $changes -eq 0 ]] && [[ $untracked -eq 0 ]]; then
+            echo "There are no changes to commit after sync.js. Exiting..."
+            exit 0
+          fi
+
+      - name: Create pull request
+        if: steps.check-changes.outcome != 'success'
+        id: create-pull-request
+        uses: peter-evans/create-pull-request@5b4a9f6a9e2af26e5f02351490b90d01eb8ec1e5 # pin @v5.0.0
+        env:
+          # Disable pre-commit hooks; they don't play nicely here
+          HUSKY: '0'
+        with:
+          commit-message: 'Update data files'
+          title: Schema update
+          body:
+            "Hello! Some data in ggracepark/remark-block-list was updated recently. This PR
+            syncs up thedata in this repo.\n\n
+            If CI passes, this PR will be auto-merged. :green_heart:\n\n
+            If CI does not pass or other problems arise, contact #docs-engineering on slack."
+          branch: gracepark-update
