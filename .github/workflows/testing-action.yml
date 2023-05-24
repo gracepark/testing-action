@@ -46,8 +46,6 @@ jobs:
           path: gracepark/remark-block-list/README.md
           ref: 'main'
 
-      - uses: ./.github/actions/node-npm-setup
-
       - name: Get the remark-block-list SHA being synced
         id: remark-block-list
         run: |
