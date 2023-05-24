@@ -46,20 +46,9 @@ jobs:
           path: gracepark/remark-block-list/README.md
           ref: 'main'
 
-      - name: Get the remark-block-list SHA being synced
-        id: remark-block-list
-        run: |
-          cd remark-block-list
-          OPENAPI_COMMIT_SHA=$(git rev-parse HEAD)
-          echo "OPENAPI_COMMIT_SHA=$OPENAPI_COMMIT_SHA" >> $GITHUB_OUTPUT
-          echo "Copied files from gracepark/remark-block-list repo. Commit SHA: $OPENAPI_COMMIT_SHA"
-
       - name: Run updater script
         run: |
           sync.js
-          git status
-          echo "Deleting the cloned gracepark/remark-block-list repo..."
-          rm -rf remark-block-list
 
       - name: Check for changes
         id: check-changes
