@@ -61,7 +61,7 @@ jobs:
           # If nothing to commit, exit now. It's fine. No orphans.
           changes=$(git diff --name-only | wc -l)
           untracked=$(git status --untracked-files --short | wc -l)
-          git status
+          git stash
           if [[ $changes -eq 0 ]] && [[ $untracked -eq 0 ]]; then
             echo "There are no changes to commit after sync.js. Exiting..."
             echo "CHECKED_CHANGES=false" >> "$GITHUB_OUTPUT"
