@@ -60,6 +60,7 @@ jobs:
         run: |
           # If nothing to commit, exit now. It's fine. No orphans.
           git stash
+          git status
           changes=$(git diff --name-only | wc -l)
           untracked=$(git status --untracked-files --short | wc -l)
           if [[ $changes -eq 0 ]] && [[ $untracked -eq 0 ]]; then
