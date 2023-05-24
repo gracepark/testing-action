@@ -62,7 +62,6 @@ jobs:
           untracked=$(git status --untracked-files --short | wc -l)
           if [[ $changes -eq 0 ]] && [[ $untracked -eq 0 ]]; then
             echo "There are no changes to commit after sync.js. Exiting..."
-            exit 0
           fi
 
       - name: Create pull request
