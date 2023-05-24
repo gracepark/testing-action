@@ -48,7 +48,7 @@ jobs:
 
       - name: Run updater script
         run: |
-          sync.js
+          touch example.txt
 
       - name: Check for changes
         id: check-changes
