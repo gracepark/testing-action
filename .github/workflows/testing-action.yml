@@ -42,7 +42,7 @@ jobs:
         # By default, only the most recent commit of the `main` branch
         # will be checked out
         with:
-          repository: gracepark/remark-block-list repo
+          repository: gracepark/remark-block-list
           path: gracepark/remark-block-list/README.md
           ref: 'main'
 
