@@ -50,11 +50,11 @@ jobs:
 
       - name: Run updater script
         run: |
-          touch example.txt
+          echo "Hello you!" >> myfile.txt
           git config --global user.email "gracejiyoung@gmail.com "
           git config --global user.name "Grace Park"
-          git add example.txt
-          git commit -m 'adding example.txt'
+          git add myfile.txt
+          git commit -m 'adding myfile.txt'
 
       - name: Check for changes
         id: check-changes
@@ -70,7 +70,7 @@ jobs:
           fi
 
       - name: Create pull request
-        if: ${{ steps.check-changes.outputs.output == false }}
+        if: ${{ steps.check-changes.outputs.output == true }}
         id: create-pull-request
         uses: peter-evans/create-pull-request@5b4a9f6a9e2af26e5f02351490b90d01eb8ec1e5 # pin @v5.0.0
         env:
