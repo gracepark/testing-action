@@ -49,6 +49,8 @@ jobs:
       - name: Run updater script
         run: |
           touch example.txt
+          git add example.txt
+          git commit -m 'adding example.txt'
 
       - name: Check for changes
         id: check-changes
