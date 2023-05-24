@@ -48,7 +48,7 @@ jobs:
 
       - uses: ./.github/actions/node-npm-setup
 
-      name: Get the remark-block-list SHA being synced
+      - name: Get the remark-block-list SHA being synced
         id: remark-block-list
         run: |
           cd remark-block-list
