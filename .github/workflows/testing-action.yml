@@ -46,14 +46,6 @@ jobs:
           path: gracepark/remark-block-list/README.md
           ref: 'main'
 
-      - name: Run updater script
-        run: |
-          echo "Hello you!" >> myfile.txt
-          git config --global user.email "gracejiyoung@gmail.com "
-          git config --global user.name "Grace Park"
-          git add myfile.txt
-          git commit -m 'adding myfile.txt'
-
       - name: Check for changes
         id: check-changes
         run: |
