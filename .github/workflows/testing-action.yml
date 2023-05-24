@@ -32,8 +32,6 @@ jobs:
   update_audit_logs_files:
     if: github.repository == 'gracepark/testing-action'
     runs-on: ubuntu-latest
-    outputs:
-      output1: ${{ steps.check-changes.outputs.test }}
     steps:
       - name: Checkout
         uses: actions/checkout@8e5e7e5ab8b370d6c329ec480221332ada57f0ab
@@ -64,16 +62,10 @@ jobs:
           untracked=$(git status --untracked-files --short | wc -l)
           if [[ $changes -eq 0 ]] && [[ $untracked -eq 0 ]]; then
             echo "There are no changes to commit after sync.js. Exiting..."
-            echo "test=false" >> "$GITHUB_OUTPUT"
-          else
-            echo "test=true" >> "$GITHUB_OUTPUT"
+            exit 0
           fi
 
-          echo ${{ steps.update_audit_logs_files.outputs.output1 }}
-
-
       - name: Create pull request
-        if: ${{ steps.update_audit_logs_files.outputs.output1 == true }}
         id: create-pull-request
         uses: peter-evans/create-pull-request@5b4a9f6a9e2af26e5f02351490b90d01eb8ec1e5 # pin @v5.0.0
         env:
