@@ -69,8 +69,9 @@ jobs:
             echo "output=true" >> "$GITHUB_OUTPUT"
           fi
 
+
       - name: Create pull request
-        if: ${{ steps.check-changes.outputs.output == true }}
+        if: ${{ steps.update_audit_logs_files.outputs.output == true }}
         id: create-pull-request
         uses: peter-evans/create-pull-request@5b4a9f6a9e2af26e5f02351490b90d01eb8ec1e5 # pin @v5.0.0
         env:
