@@ -49,6 +49,8 @@ jobs:
       - name: Run updater script
         run: |
           touch example.txt
+          git config --global user.email "gracejiyoung@gmail.com "
+          git config --global user.name "Grace Park"
           git add example.txt
           git commit -m 'adding example.txt'
 
