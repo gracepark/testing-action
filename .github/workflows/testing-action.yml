@@ -69,6 +69,8 @@ jobs:
             echo "output=true" >> "$GITHUB_OUTPUT"
           fi
 
+          echo ${{ steps.update_audit_logs_files.outputs.output }}
+
 
       - name: Create pull request
         if: ${{ steps.update_audit_logs_files.outputs.output == true }}
