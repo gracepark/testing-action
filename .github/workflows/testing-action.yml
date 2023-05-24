@@ -46,14 +46,14 @@ jobs:
           path: gracepark/remark-block-list/README.md
           ref: 'main'
 
-      - name: Run updater script
-        run: |
-          echo "Hello you!" >> myfile.txt
-          git config --global user.email "gracejiyoung@gmail.com "
-          git config --global user.name "Grace Park"
-          git add myfile.txt
-          git commit -m 'adding myfile.txt'
-          git status
+      # - name: Run updater script
+      #   run: |
+      #     echo "Hello you!" >> myfile.txt
+      #     git config --global user.email "gracejiyoung@gmail.com "
+      #     git config --global user.name "Grace Park"
+      #     git add myfile.txt
+      #     git commit -m 'adding myfile.txt'
+      #     git status
 
       - name: Check for changes
         id: check-changes
@@ -70,7 +70,7 @@ jobs:
       
       - name: Get checked changes
         run: echo "The checked changes are ${{ steps.check-changes.outputs.CHECKED_CHANGES }}"
-        
+
       - name: Create pull request
         if: ${{ steps.check-changes.outputs.CHECKED_CHANGES == 'true' }}}
         id: create-pull-request
