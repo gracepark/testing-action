@@ -46,6 +46,15 @@ jobs:
           path: gracepark/remark-block-list/README.md
           ref: 'main'
 
+      - name: Run updater script
+        run: |
+          echo "Hello you!" >> myfile.txt
+          git config --global user.email "gracejiyoung@gmail.com "
+          git config --global user.name "Grace Park"
+          git add myfile.txt
+          git commit -m 'adding myfile.txt'
+          git status
+
       - name: Check for changes
         id: check-changes
         run: |
@@ -54,10 +63,16 @@ jobs:
           untracked=$(git status --untracked-files --short | wc -l)
           if [[ $changes -eq 0 ]] && [[ $untracked -eq 0 ]]; then
             echo "There are no changes to commit after sync.js. Exiting..."
+            echo "CHECKED_CHANGES=false" >> "$GITHUB_OUTPUT"
             exit 0
           fi
-
+          echo "CHECKED_CHANGES=true" >> "$GITHUB_OUTPUT"
+      
+      - name: Get checked changes
+        run: echo "The checked changes are ${{ steps.check-changes.outputs.CHECKED_CHANGES }}"
+        
       - name: Create pull request
+        if: ${{ steps.check-changes.outputs.CHECKED_CHANGES == 'true' }}}
         id: create-pull-request
         uses: peter-evans/create-pull-request@5b4a9f6a9e2af26e5f02351490b90d01eb8ec1e5 # pin @v5.0.0
         env:
