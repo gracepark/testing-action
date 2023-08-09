@@ -20,11 +20,10 @@ permissions:
 jobs:
   noResponse:
     runs-on: ubuntu-latest
-    if: github.repository == 'github/docs-internal' || github.repository == 'github/docs'
+    if: github.repository == 'gracepark/testing-action'
     steps:
       - uses: actions/stale@184e7afe930f6b5c7ce52c4b3f087692c6e912f3
         with:
-          repo-token: ${{ secrets.GITHUB_TOKEN }}
           only-issue-labels: 'more-information-needed'
           days-before-issue-close: 14
           close-issue-reason: >
