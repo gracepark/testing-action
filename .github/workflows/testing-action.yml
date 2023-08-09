@@ -11,8 +11,8 @@ on:
   issue_comment:
     types: [created]
 
-  schedule:
-    - cron: '20 * * * *' # Run each hour at 20 minutes past
+  # schedule:
+  #   - cron: '20 * * * *' # Run each hour at 20 minutes past
 
 permissions:
   issues: write
