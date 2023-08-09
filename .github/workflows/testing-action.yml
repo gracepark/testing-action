@@ -11,8 +11,7 @@ on:
   issue_comment:
     types: [created]
 
-  schedule:
-    - cron: '* * * * *' # Run each hour at 20 minutes past
+  workflow_dispatch:
 
 permissions:
   issues: write
