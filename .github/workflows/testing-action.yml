@@ -24,10 +24,9 @@ jobs:
     steps:
       - uses: actions/stale@184e7afe930f6b5c7ce52c4b3f087692c6e912f3
         with:
-          only-labels: 'more-information-needed'
-          days-before-stale: 1
-          days-before-close: 0
-          labels-to-remove-when-unstale: 'more-information-needed'
+          only-issue-labels: 'more-information-needed'
+          days-before-issue-stale: 0
+          days-before-issue-close: 0
           close-issue-message: >
             This issue has been automatically closed because there has been no response
             to our request for more information from the original author. With only the
