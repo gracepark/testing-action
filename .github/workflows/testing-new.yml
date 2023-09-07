@@ -41,4 +41,4 @@ jobs:
           git diff --name-only --diff-filter=d $GITHUB_BASE_REF $GITHUB_HEAD_REF
 
       - name: Run content linter
-        run: node src/content-linter/scripts/markdownlint.js --errors-only --paths $(git diff --name-only --diff-filter=d $GITHUB_BASE_REF $GITHUB_HEAD_REF)
+        run: node src/content-linter/scripts/markdownlint.js --paths $(git diff --name-only --diff-filter=d $GITHUB_BASE_REF $GITHUB_HEAD_REF)
