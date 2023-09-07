@@ -7,26 +7,6 @@ program
     '-p, --paths [paths...]',
     'Specify filepaths to include. Default: changed and staged files',
   )
-  .addOption(
-    new Option(
-      '--errors-only',
-      'Only report rules that have the severity of error, not warning.',
-    ).conflicts('rules'),
-  )
-  .option('--fix', 'Automatically fix errors that can be fixed.')
-  .addOption(
-    new Option(
-      '--summary-by-rule',
-      'Summarize the number of errors for each rule, leaving out error details.',
-    ).conflicts(['error', 'paths', 'rules', 'fix']),
-  )
-  .option('--verbose', 'Output additional error detail.')
-  .addOption(
-    new Option(
-      '-r, --rules [rules...]',
-      `Specify rules to run. For example, by short name MD001 or long name heading-increment \n${listRules()}\n\n`,
-    ).conflicts('error'),
-  )
   .parse(process.argv)
 
 const {  paths,  summaryByRule } = program.opts()
