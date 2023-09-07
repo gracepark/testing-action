@@ -24,9 +24,10 @@ jobs:
     steps:
       - uses: actions/stale@184e7afe930f6b5c7ce52c4b3f087692c6e912f3
         with:
+          repo-token: ${{ secrets.GITHUB_TOKEN }}
           only-labels: 'more-information-needed'
           days-before-stale: -1
-          days-before-issue-stale: 0
+          days-before-issue-stale: 14
           days-before-close: -1
           days-before-issue-close: 0
           close-issue-message: >
