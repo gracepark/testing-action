@@ -1,14 +1,5 @@
 #!/usr/bin/env node
 import { program, Option } from 'commander'
-import markdownlint from 'markdownlint'
-import { applyFixes } from 'markdownlint-rule-helpers'
-import { readFile, writeFile } from 'fs/promises'
-import ora from 'ora'
-import { extname } from 'path'
-import { execSync } from 'child_process'
-
-import walkFiles from '../../../script/helpers/walk-files.js'
-import { allConfig, allRules, customRules } from '../lib/helpers/get-rules.js'
 
 program
   .description('Run GitHub Docs Markdownlint rules.')
@@ -38,7 +29,7 @@ program
   )
   .parse(process.argv)
 
-const { fix, paths, errorsOnly, rules, summaryByRule, verbose } = program.opts()
+const {  paths,  summaryByRule } = program.opts()
 const ALL_CONTENT_DIR = ['content', 'data']
 
 main()
