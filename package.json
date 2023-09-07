@@ -16,5 +16,8 @@
   "bugs": {
     "url": "https://github.com/gracepark/testing-action/issues"
   },
-  "homepage": "https://github.com/gracepark/testing-action#readme"
+  "homepage": "https://github.com/gracepark/testing-action#readme",
+  "dependencies": {
+    "commander": "^11.0.0"
+  }
 }
