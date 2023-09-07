@@ -44,4 +44,4 @@ jobs:
           echo "EOF" >> $GITHUB_OUTPUT
 
       - name: Run content linter
-        run: echo ${{ steps.changed-files.outputs.changed_files }}
+        run: node src/content-linter/scripts/markdownlint.js --paths ${{ steps.changed-files.outputs.changed_files }}
