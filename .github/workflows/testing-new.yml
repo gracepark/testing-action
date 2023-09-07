@@ -38,10 +38,7 @@ jobs:
           git checkout $GITHUB_HEAD_REF
 
           echo "List the files that changed"
-          CHANGED_FILES=$(git diff --name-only --diff-filter=d $GITHUB_BASE_REF $GITHUB_HEAD_REF)
-          echo "CHANGED_FILES<<EOF" >> $GITHUB_OUTPUT
-          echo "$CHANGED_FILES" >> $GITHUB_OUTPUT
-          echo "EOF" >> $GITHUB_OUTPUT
+          git diff --name-only --diff-filter=d $GITHUB_BASE_REF $GITHUB_HEAD_REF
 
       - name: Run content linter
-        run: node src/content-linter/scripts/markdownlint.js --paths ${{ steps.changed-files.outputs.changed_files }}
+        run: node src/content-linter/scripts/markdownlint.js --errors-only --paths $(git diff --name-only --diff-filter=d $GITHUB_BASE_REF $GITHUB_HEAD_REF)
