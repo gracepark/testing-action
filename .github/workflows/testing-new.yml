@@ -16,29 +16,27 @@ permissions:
 
 jobs:
   lint-content:
-    runs-on: "ubuntu-latest"
+    runs-on: ubuntu-latest
     steps:
       - name: Check out repo
         uses: actions/checkout@3df4ab11eba7bda6032a0b82a6bb43b11571feac # v4.0.0
         with:
-          ref: ${{ github.head_ref }}
+          # Needed to detect changed files
+          fetch-depth: 2
 
-      - name: Check out base ref
-        run: git fetch --no-tags --depth=1 origin $GITHUB_BASE_REF
+      - name: Set up Node and dependencies
+        uses: ./.github/actions/node-npm-setup
 
-      - name: Get changed files
+      - name: Get updated docs
+        if: ${{ github.event_name == 'push' }}
         id: changed-files
-        run: |
-          set -e # exit when any command fails
+        uses: tj-actions/changed-files@48566bbcc22ceb7c5809ebdd27377309f2c3de8c # pin @v39.0.0
+        with:
+          fetch_depth: 2
+          files: |
+            content/**
+            data/**
 
-          echo "Ensure we can view $GITHUB_BASE_REF"
-          git checkout $GITHUB_BASE_REF
-
-          echo "Ensure we can view $GITHUB_HEAD_REF"
-          git checkout $GITHUB_HEAD_REF
-
-          echo "List the files that changed"
-          git diff --name-only --diff-filter=d $GITHUB_BASE_REF $GITHUB_HEAD_REF
-
-      - name: Run content linter
-        run: node src/content-linter/scripts/markdownlint.js --paths $(git diff --name-only --diff-filter=d $GITHUB_BASE_REF $GITHUB_HEAD_REF)
+      - name: Run content linter if changed content/data files
+        if: steps.changed-files.outputs.any_changed == 'true'
+        run: node src/content-linter/scripts/markdownlint.js --paths ${{ steps.changed-files.outputs.all_changed_files }}
