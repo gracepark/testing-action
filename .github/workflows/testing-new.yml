@@ -24,9 +24,6 @@ jobs:
           # Needed to detect changed files
           fetch-depth: 2
 
-      - name: Set up Node and dependencies
-        uses: ./.github/actions/node-npm-setup
-
       - name: Get updated docs
         if: ${{ github.event_name == 'push' }}
         id: changed-files
