@@ -33,7 +33,10 @@ jobs:
           files: |
             content/**
             data/**
+          separator: " "
 
       - name: Run content linter if changed content/data files
         if: steps.changed-files.outputs.any_changed == 'true'
-        run: node src/content-linter/scripts/markdownlint.js --paths ${{ steps.changed-files.outputs.all_changed_files }}
+        run: |
+          echo ${{ steps.changed-files.outputs.all_changed_and_modified_files }}
+          node src/content-linter/scripts/markdownlint.js --paths ${{ steps.changed-files.outputs.all_changed_and_modified_files }}
