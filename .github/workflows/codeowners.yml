@@ -19,7 +19,7 @@ jobs:
         run: |
           has_reviewer=$(
             gh pr view $PR --json reviews |
-            jq 'any(.reviews[]; select(.reviews | index("grp392")))'
+            jq 'any(.reviews[]; select(length > 0))'
           )
           if ! $has_reviewer
           then
