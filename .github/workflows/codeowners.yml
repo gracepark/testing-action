@@ -18,9 +18,9 @@ jobs:
         run: |
           has_reviewer=$(
             gh pr view $PR --json reviews |
-            jq 'any(.reviews[]; select(.reviews | index("gracepark")))'
+            jq 'any(.reviews[]; select(.reviews | index("grp392")))'
           )
           if ! $has_reviewer
           then
-            gh pr edit $PR --add-reviewer gracepark
+            gh pr edit $PR --add-reviewer grp392
           fi
