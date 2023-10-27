@@ -25,7 +25,6 @@ jobs:
           fetch-depth: 2
 
       - name: Get updated docs
-        if: ${{ github.event_name == 'push' }}
         id: changed-files
         uses: tj-actions/changed-files@48566bbcc22ceb7c5809ebdd27377309f2c3de8c # pin @v39.0.0
         with:
