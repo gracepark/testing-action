@@ -37,7 +37,7 @@ jobs:
           NUM_FILES_CHANGED=$(git diff --name-only HEAD^..HEAD | wc -l)
           if [[ $NUM_FILES_CHANGED -ge 1 ]]
             then
-              node script/render-content-markdown.js
+              echo "There are $NUM_FILES_CHANGED files changed"
             else
               echo "No updates to push to the snapshot repo"
           fi    
