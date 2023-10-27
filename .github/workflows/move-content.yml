@@ -31,22 +31,19 @@ jobs:
         with:
           fetch-depth: 2
       
-      - name: Run render-content-markdown script
-        shell: bash
-        id: content-files
+      - name: Get changed files
+        id: changed-files
+        uses: tj-actions/changed-files@246636f5fa148b5ad8e65ca4c57b18af3123e5f6 # v39.0.1
+        with:
+          files: |
+            'content/**'
+            'data/**'
+
+      - name: Run tests
+        env:
+          ALL_MODIFIED_FILES: ${{ steps.changed-files.outputs.all_modified_files }}
         run: |
-          NUM_FILES_CHANGED=$(git diff --name-only HEAD^..HEAD | wc -l)
-          FILES_CHANGED=$(git diff --name-only HEAD^..HEAD)
-          if [[ $NUM_FILES_CHANGED -ge 1 ]]
-            then
-              echo "There are $NUM_FILES_CHANGED files changed"
-              echo "$FILES_CHANGED"
-            else
-              echo "No updates to push to the snapshot repo"
-          fi    
-      - name: Get file names
-        run: |
-          echo "Files changed: ${{ steps.content-files.outputs.FILES_CHANGED }}"
+          echo "ALL_MODIFIED_FILES: $ALL_MODIFIED_FILES"
          
       - name: Checkout the docs-cp4d-snapshot repo
         uses: actions/checkout@3df4ab11eba7bda6032a0b82a6bb43b11571feac # v4.0.0
