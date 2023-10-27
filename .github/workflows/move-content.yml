@@ -1,0 +1,50 @@
+name: Update docs-cp4d-snapshot content files
+
+# **What it does**: Provides errors and summary statistics on rendering translated content.
+# **Why we have it**: To improve our translations by having clearer visibility.
+# **Who does it impact**: Docs engineering, Microsoft translators.
+
+on:
+  push:
+    branches:
+      - main
+    paths:
+      - content/**
+      - data/**
+  workflow_dispatch:
+
+permissions:
+  contents: write
+
+jobs:
+  sync-content-markdown:
+    name: Sync content markdown for snapshot repo
+    if: github.repository == 'gracepark/testing-action'
+    runs-on: ubuntu-latest
+    # This sets a maximum execution time of 60 minutes (1 hour)
+    # to prevent the workflow from running longer than necessary.
+    timeout-minutes: 60
+
+    steps:
+      - name: Checkout the docs-internal repo
+        uses: actions/checkout@3df4ab11eba7bda6032a0b82a6bb43b11571feac # v4.0.0
+        with:
+          fetch-depth: 2
+      
+      - name: Run render-content-markdown script
+        shell: bash
+        run: |
+          NUM_FILES_CHANGED=$(git diff --name-only HEAD^..HEAD | wc -l)
+          if [[ $NUM_FILES_CHANGED -ge 1 ]]
+            then
+              node script/render-content-markdown.js
+            else
+              echo "No updates to push to the snapshot repo"
+          fi    
+
+      - name: Checkout the docs-cp4d-snapshot repo
+        uses: actions/checkout@3df4ab11eba7bda6032a0b82a6bb43b11571feac # v4.0.0
+        with:
+          repository: github/docs-internal.content-copilot
+          token: ${{ secrets.GITHUB_TOKEN }}
+          path: content-copilot
