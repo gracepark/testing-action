@@ -33,18 +33,24 @@ jobs:
       
       - name: Run render-content-markdown script
         shell: bash
+        id: content-files
         run: |
           NUM_FILES_CHANGED=$(git diff --name-only HEAD^..HEAD | wc -l)
+          FILES_CHANGED=$(git diff --name-only HEAD^..HEAD)
           if [[ $NUM_FILES_CHANGED -ge 1 ]]
             then
               echo "There are $NUM_FILES_CHANGED files changed"
+              echo "$FILES_CHANGED"
             else
               echo "No updates to push to the snapshot repo"
           fi    
-
+      - name: Get file names
+        run: |
+          echo "Files changed: ${{ steps.content-files.outputs.FILES_CHANGED }}"
+         
       - name: Checkout the docs-cp4d-snapshot repo
         uses: actions/checkout@3df4ab11eba7bda6032a0b82a6bb43b11571feac # v4.0.0
         with:
-          repository: github/docs-internal.content-copilot
+          repository: gracepark/testing
           token: ${{ secrets.GITHUB_TOKEN }}
-          path: content-copilot
+          path: testing
