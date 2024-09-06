@@ -25,15 +25,15 @@ jobs:
         run: |
           echo ${{ steps.get-incidents.outputs }}
           
-        env:
-          PAGERDUTY_TOKEN: ${{ secrets.TEST_PAGERDUTY_TOKEN }}
-          GITHUB_TOKEN: ${{ secrets.GRACE_TOKEN }}
-          TEAM_IDS: 'P0AWF24' # You can list multiple IDs separated by commas
-          REPO_OWNER: 'gracepark' # Replace with your repository owner
-          REPO_NAME: 'testing-action' # Replace with your repository name
-          FR_LABEL: 'on-call' # Label to identify FR issues
-        with:
-          github-token: ${{ secrets.GRACE_TOKEN }}
-          script: |
-            const updateFRIssue = require('./workflow_scripts/update_fr_issue.js');
-            await updateFRIssue({ github, core });
+        # env:
+        #   PAGERDUTY_TOKEN: ${{ secrets.TEST_PAGERDUTY_TOKEN }}
+        #   GITHUB_TOKEN: ${{ secrets.GRACE_TOKEN }}
+        #   TEAM_IDS: 'P0AWF24' # You can list multiple IDs separated by commas
+        #   REPO_OWNER: 'gracepark' # Replace with your repository owner
+        #   REPO_NAME: 'testing-action' # Replace with your repository name
+        #   FR_LABEL: 'on-call' # Label to identify FR issues
+        # with:
+        #   github-token: ${{ secrets.GRACE_TOKEN }}
+        #   script: |
+        #     const updateFRIssue = require('./workflow_scripts/update_fr_issue.js');
+        #     await updateFRIssue({ github, core });
