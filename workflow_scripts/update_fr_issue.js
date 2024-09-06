@@ -1,5 +1,5 @@
 // File: workflow_scripts/update_fr_issue.js
-const PagerDuty = require('node-pagerduty')
+// const PagerDuty = require('node-pagerduty')
 
 module.exports = async ({github, core}) => {
   try {

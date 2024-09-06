@@ -1,8 +1,6 @@
 name: 'Update FR Issue with Incidents'
 
-on:
-  schedule:
-    - cron: '*/10 * * * *' # Every 10 minutes
+on: workflow_dispatch
 
 jobs:
   update-fr-issue:
