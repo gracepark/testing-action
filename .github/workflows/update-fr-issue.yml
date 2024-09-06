@@ -1,0 +1,41 @@
+name: 'Update FR Issue with Incidents'
+
+on:
+  schedule:
+    - cron: '*/10 * * * *' # Every 10 minutes
+
+jobs:
+  update-fr-issue:
+    runs-on: ubuntu-latest
+    continue-on-error: true
+    outputs:
+      incidents: ${{ steps.get-incidents.outputs.incidents }}
+    steps:
+      - uses: actions/checkout@v4
+
+      - name: Get incidents list
+        id: get-incidents
+        uses: byronrwalker/pagerduty-incidents-action@v1.0.0
+        with:
+          schedule_id: 'PT4KHLK'  # test schedule ID
+          start_time: '2015-10-06T00:00:00Z'  # Start of time range (ISO format)
+          end_time: '2015-10-06T23:59:59Z'  # End of time range (ISO format)
+        env:
+          PAGERDUTY_TOKEN: secrets.TEST_PAGERDUTY_TOKEN # test token
+
+      - name: Update FR issue with incidents
+        run: |
+          echo ${{ steps.get-incidents.outputs }}
+          
+        env:
+          PAGERDUTY_TOKEN: ${{ secrets.TEST_PAGERDUTY_TOKEN }}
+          GITHUB_TOKEN: ${{ secrets.GRACE_TOKEN }}
+          TEAM_IDS: 'P0AWF24' # You can list multiple IDs separated by commas
+          REPO_OWNER: 'gracepark' # Replace with your repository owner
+          REPO_NAME: 'testing-action' # Replace with your repository name
+          FR_LABEL: 'on-call' # Label to identify FR issues
+        with:
+          github-token: ${{ secrets.GRACE_TOKEN }}
+          script: |
+            const updateFRIssue = require('./workflow_scripts/update_fr_issue.js');
+            await updateFRIssue({ github, core });
