@@ -33,7 +33,7 @@ jobs:
           end_time: ${{ env.PAST_DATE_TIME }}  # End of time range (ISO format)
 
       - name: Find FR Issue
-        uses: actions/github-script@e69ef5462fd455e02edcaf4dd7708eda96b9eda0
+        uses: actions/github-script@60a0d83039c74a4aee543508d2ffcb1c3799cdea
         id: find-fr-issue
         env:
           github-token: ${{ secrets.GITHUB_TOKEN }}
@@ -41,7 +41,7 @@ jobs:
         with: 
           result-encoding: string
           script: |
-            const issues = await github.rest.issues.listForRepo({
+            const issues = await github.rest.gissues.listForRepo({
                 owner: 'github',
                 repo: 'web-systems',
                 labels: 'epic, on track',
