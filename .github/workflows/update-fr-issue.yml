@@ -10,7 +10,7 @@ jobs:
       incidents: ${{ steps.get-incidents.outputs.incidents }}
     steps:
       - name: Checkout code
-      - uses: actions/checkout@v4
+        uses: actions/checkout@v4
 
       - name: Get current date and time
         id: datetime
