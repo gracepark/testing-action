@@ -76,6 +76,4 @@ jobs:
           body: |
             There are ${{ steps.get-incidents.outputs.incident_count }} incidents in the last 10 minutes. Please check if any of these incidents are related to the FR issue.
 
-            | Incident | Service | Summary | Created At |
-            | --- | --- | --- | --- |
             ${{ steps.format-table.outputs.table }}
