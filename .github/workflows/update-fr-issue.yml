@@ -36,7 +36,7 @@ jobs:
         if: ${{ steps.get-incidents.outputs.incident_count > 0 }}
         id: format-table
         run: |
-          incidents=$(steps.get-incidents.outputs.incidents)
+          incidents=${{ steps.get-incidents.outputs.incidents }}
           table="| Incident | Service | Summary | Created At |\n| --- | --- | --- | --- |\n"
           for row in $(echo "${incidents}" | jq -r '.[] | @base64'); do
             _jq() {
