@@ -9,7 +9,18 @@ jobs:
     outputs:
       incidents: ${{ steps.get-incidents.outputs.incidents }}
     steps:
+      - name: Checkout code
       - uses: actions/checkout@v4
+
+      - name: Get current date and time
+        id: datetime
+        run: |
+          CURRENT_DATE_TIME=$(date -u +"%Y-%m-%dT%H:%M:%SZ")
+          echo "Current date and time: $CURRENT_DATE_TIME"
+          echo "DATE_TIME=$CURRENT_DATE_TIME" >> $GITHUB_ENV
+          PAST_DATE_TIME=$(date -u -d "$CURRENT_DATE_TIME - 10 minutes" +"%Y-%m-%dT%H:%M:%SZ")
+          echo "Date and time 10 minutes ago: $PAST_DATE_TIME"
+          echo "PAST_DATE_TIME=$PAST_DATE_TIME" >> $GITHUB_ENV
 
       - name: Get incidents list
         id: get-incidents
@@ -17,8 +28,8 @@ jobs:
         with:
           pagerduty_token: secrets.TEST_PAGERDUTY_TOKEN # test token
           team_id: 'P3XDFGJ'  # test team ID
-          start_time: '2020-10-06T00:00:00Z'  # Start of time range (ISO format)
-          end_time: '2024-10-06T23:59:59Z'  # End of time range (ISO format)
+          start_time: ${{ env.CURRENT_DATE_TIME }}  # Start of time range (ISO format)
+          end_time: ${{ env.PAST_DATE_TIME }}  # End of time range (ISO format)
 
       - name: Update FR issue with incidents
         run: |
