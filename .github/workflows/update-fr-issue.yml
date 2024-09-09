@@ -45,9 +45,8 @@ jobs:
                 labels: ['epic', 'on track'],
                 state: 'open',
               })
-            console.log(issues)
+            console.log(issues.length)
             const currentIssue = issues.data.find(issue => issue.title.includes('First Responder Work'))
-            console.log(currentIssue)
             return currentIssue ? currentIssue.number : null
 
       - name: Add comment to FR issue
