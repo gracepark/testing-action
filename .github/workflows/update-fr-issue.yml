@@ -31,6 +31,20 @@ jobs:
           date_range: 'all'
           start_time: ${{ env.CURRENT_DATE_TIME }}  # Start of time range (ISO format)
           end_time: ${{ env.PAST_DATE_TIME }}  # End of time range (ISO format)
+      
+      - name: Format incidents as Markdown table
+        if: {{ steps.get-incidents.outputs.incident_count > 0 }}
+        id: format-table
+        run: |
+          incidents=$(steps.get-incidents.outputs.incidents)
+          table="| Incident | Service | Summary | Created At |\n| --- | --- | --- | --- |\n"
+          for row in $(echo "${incidents}" | jq -r '.[] | @base64'); do
+            _jq() {
+              echo ${row} | base64 --decode | jq -r ${1}
+            }
+            table="${table}| $(_jq '.incident') | $(_jq '.service') | $(_jq '.summary') | $(_jq '.created_at') |\n"
+          done
+          echo "::set-output name=table::${table}"
 
       - name: Find FR Issue
         id: find-fr-issue
@@ -64,4 +78,4 @@ jobs:
 
             | Incident | Service | Summary | Created At |
             | --- | --- | --- | --- |
-            ${{ steps.get-incidents.outputs.incidents }}
+            ${{ steps.format-table.outputs.table }}
