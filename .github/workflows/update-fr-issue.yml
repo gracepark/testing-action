@@ -41,7 +41,7 @@ jobs:
         with: 
           result-encoding: string
           script: |
-            const issues = await octokit.issues.listForRepo({
+            const issues = await github.issues.listForRepo({
                 owner: 'github',
                 repo: 'web-systems',
                 labels: 'epic, on track',
