@@ -43,7 +43,7 @@ jobs:
               const issues = await github.rest.issues.listForRepo({
                   owner: 'gracepark',
                   repo: 'testing-action',
-                  labels: 'epic', 'on track',
+                  labels: 'epic, on track',
                   state: 'open',
                 })
               console.log(issues.length)
