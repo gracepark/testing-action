@@ -37,7 +37,7 @@ jobs:
         uses: actions/github-script@60a0d83039c74a4aee543508d2ffcb1c3799cdea
         with: 
           github-token: ${{ secrets.GITHUB_TOKEN }}
-          result-encoding: string
+          result-encoding: object
           script: |
             try {
               const issues = await github.rest.issues.listForRepo({
@@ -47,15 +47,21 @@ jobs:
                   state: 'open',
                 })
               const currentIssue = issues.data.find(issue => issue.title.includes('First Responder Work'))
-              console.log(currentIssue.url.replace('api.github.com/repos', 'github.com'))
-              return currentIssue ? currentIssue.url.replace('api.github.com/repos', 'github.com') : ''
+              console.log(currentIssue)
+              return {
+                issue_url: currentIssue ? currentIssue.url.replace('api.github.com/repos', 'github.com') : ''
+                issue_number: currentIssue ? currentIssue.number : '' 
+              }
             } catch (error) {
               console.log(error.message)
               console.error(error)
             }
 
       - name: Add comment to FR issue
-        # if: ${{ steps.get-incidents.outputs.incident_count != '0' && steps.find-fr-issue.outputs.issue_url != '' }} 
+        if: ${{ steps.get-incidents.outputs.incident_count > 0 && steps.find-fr-issue.outputs.result != '' }}
+        uses: peter-evans/create-or-update-comment@71345be0265236311c031f5c7866368bd1eff043
+        with:
+          issue-number: ${{ steps.find-fr-issue.outputs.result }}
         run: |
           echo ${{ steps.find-fr-issue.outputs.result }}
         # env:
