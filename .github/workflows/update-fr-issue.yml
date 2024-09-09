@@ -37,7 +37,7 @@ jobs:
         id: format-table
         run: |
           INCIDENTS='${{steps.get-incidents.outputs.incidents}}'
-          TABLE=$(echo "$JSON_ARRAY" | jq -r '
+          TABLE=$(echo "$INCIDENTS" | jq -r '
             ["Incident Number", "Title", "Description", "Created At", "Updated At", "Status"],
             (.[]
               | [.incident_number, .title, .description, .created_at, .updated_at, .status]
