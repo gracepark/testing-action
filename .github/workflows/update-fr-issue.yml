@@ -37,8 +37,17 @@ jobs:
         id: format-table
         run: |
           INCIDENTS='${{steps.get-incidents.outputs.incidents}}'
-          echo "$INCIDENTS" | jq '.[] | {incident_number: .incident_number, title: .title, description: .description}'
-
+          TABLE=$(echo "$INCIDENTS" | jq '.[] | {incident_number: .incident_number, title: .title, description: .description, created_at: .created_at, updated_at: .updated_at, status: .status}')
+          BEGIN {
+            print "| Incident Number | Title                                         | Description                        | Created At          | Updated At          | Status   |"
+            print "|-----------------|-----------------------------------------------|------------------------------------| --------------------| --------------------|----------|"
+          }
+          {
+            printf "| %-15s | %-45s | %-34s | %-10s | %-10s | %-3s |\n", $1, $2, $3, $4, $5, $6 
+          }')
+          echo "markdown_table<<EOF" >> $GITHUB_ENV
+          echo "$TABLE" >> $GITHUB_ENV
+          echo "EOF" >> $GITHUB_ENV
 
       - name: Find FR Issue
         id: find-fr-issue
@@ -70,6 +79,6 @@ jobs:
           body: |
             There are ${{ steps.get-incidents.outputs.incident_count }} incidents in the last 10 minutes. Please check if any of these incidents are related to the FR issue.
 
-            ${{ steps.format-table.outputs.table }}
+            ${{ env.markdown_table }}"
 
 # [{"incident_number":1,"title":"Launch Vehicle Disintegrated","description":"Launch Vehicle Disintegrated","created_at":"2021-01-07T19:32:58Z","updated_at":"2021-01-07T19:36:03Z","status":"resolved"}, {"incident_number":2,"title":"Launch Vehicle Disintegrated","description":"Launch Vehicle Disintegrated","created_at":"2021-01-07T19:32:58Z","updated_at":"2021-01-07T19:36:03Z","status":"resolved"}]
