@@ -34,7 +34,7 @@ jobs:
 
       - name: Get number of incidents
         run: | 
-          echo "Number of incidents: ${{ steps.get-incidents.outputs.incidents.length }}"
+          echo "Number of incidents: ${{ steps.get-incidents.outputs.incident_count }}"
           echo "Incident: ${{ steps.get-incidents.outputs.incidents }}"
 
       - name: Find FR Issue
@@ -62,7 +62,7 @@ jobs:
             }
 
       - name: Add comment to FR issue
-        if: ${{ steps.get-incidents.outputs.incidents.length > 0 && steps.find-fr-issue.outputs.issue_url != null }} 
+        if: ${{ steps.get-incidents.outputs.incident_count > 0 && steps.find-fr-issue.outputs.issue_url != null }} 
         run: |
           echo ${{ steps.find-fr-issue.outputs.issue_url }}
         # env:
