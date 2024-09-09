@@ -32,6 +32,11 @@ jobs:
           start_time: ${{ env.CURRENT_DATE_TIME }}  # Start of time range (ISO format)
           end_time: ${{ env.PAST_DATE_TIME }}  # End of time range (ISO format)
 
+      - name: Get number of incidents
+        run: | 
+          echo "Number of incidents: ${{ steps.get-incidents.outputs.incidents.length }}"
+          echo "Incident: ${{ steps.get-incidents.outputs.incidents }}"
+
       - name: Find FR Issue
         id: find-fr-issue
         uses: actions/github-script@60a0d83039c74a4aee543508d2ffcb1c3799cdea
@@ -47,7 +52,7 @@ jobs:
                   state: 'open',
                 })
               const currentIssue = issues.data.find(issue => issue.title.includes('First Responder Work'))
-              console.log(currentIssue.url)
+              console.log(currentIssue.url.replace('api.github.com/repos', 'github.com'))
               return {
                 issue_url: currentIssue ? currentIssue.url.replace('api.github.com/repos', 'github.com') : null
               }
