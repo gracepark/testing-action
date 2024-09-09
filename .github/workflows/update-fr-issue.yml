@@ -47,34 +47,21 @@ jobs:
                   state: 'open',
                 })
               const currentIssue = issues.data.find(issue => issue.title.includes('First Responder Work'))
-              console.log(currentIssue)
-              return { 
-                url: currentIssue ? currentIssue.url.replace('api.github.com/repos', 'github.com') : '',
-                number: currentIssue ? currentIssue.number : ''
-              }
+              console.log(currentIssue.number)
+              return currentIssue ? currentIssue.number : ''
             } catch (error) {
               console.log(error.message)
               console.error(error)
             }
 
       - name: Add comment to FR issue
-        # if: ${{ steps.get-incidents.outputs.incident_count > 0 && steps.find-fr-issue.outputs.result.issue_url != '' }}
-        # uses: peter-evans/create-or-update-comment@71345be0265236311c031f5c7866368bd1eff043
-        # with:
-        #   issue-number: ${{ steps.find-fr-issue.outputs.result }}
-        run: |
-          ISSUE_DATA=${{ steps.find-fr-issue.outputs.result }}
+        if: ${{ steps.get-incidents.outputs.incident_count > 0 && steps.find-fr-issue.outputs.result != '' }}
+        uses: peter-evans/create-or-update-comment@71345be0265236311c031f5c7866368bd1eff043
+        with:
+          issue-number: ${{ steps.find-fr-issue.outputs.result }}
+          body: |
+            There are ${{ steps.get-incidents.outputs.incident_count }} incidents in the last 10 minutes. Please check if any of these incidents are related to the FR issue.
 
-          ISSUE_URL=$(echo "$ISSUE_DATA" | jq -r '.url')
-          ISSUE_NUMBER=$(echo "$ISSUE_DATA" | jq -r '.number')
-          echo "Issue URL: $ISSUE_URL"
-          echo "Issue Number: $ISSUE_NUMBER"
-        # env:
-        #   GITHUB_TOKEN: ${{ secrets.GRACE_TOKEN }}
-        #   REPO_OWNER: 'gracepark' # Replace with your repository owner
-        #   REPO_NAME: 'testing-action' # Replace with your repository name
-        #   FR_LABEL: 'on-call' # Label to identify FR issues
-        # with:
-        #   github-token: ${{ secrets.GRACE_TOKEN }}
-        #   script: |
-            
+            | Incident | Service | Summary | Created At |
+            | --- | --- | --- | --- |
+            ${{ steps.get-incidents.outputs.incidents }}
