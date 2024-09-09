@@ -13,7 +13,7 @@ jobs:
 
       - name: Get incidents list
         id: get-incidents
-        uses: gracepark/pagerduty-incidents-action@3c696ec33f001073ce109ac40b37e9d58af129ec
+        uses: gracepark/pagerduty-incidents-action@97b1adad5dec3fac610bc9ec4b5c7c6bb2e68b24
         with:
           schedule_id: 'PT4KHLK'  # test schedule ID
           start_time: '2015-10-06T00:00:00Z'  # Start of time range (ISO format)
