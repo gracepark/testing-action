@@ -63,9 +63,12 @@ jobs:
         # with:
         #   issue-number: ${{ steps.find-fr-issue.outputs.result }}
         run: |
-          echo ${{ steps.find-fr-issue.outputs.result }}
-          echo ${{ steps.find-fr-issue.outputs.result.issue_url }}
-          echo ${{ steps.find-fr-issue.outputs.result.issue_number }}
+          ISSUE_DATA=${{ steps.find-fr-issue.outputs.result }}
+
+          ISSUE_URL=$(echo "$ISSUE_DATA" | jq -r '.url')
+          ISSUE_NUMBER=$(echo "$ISSUE_DATA" | jq -r '.number')
+          echo "Issue URL: $ISSUE_URL"
+          echo "Issue Number: $ISSUE_NUMBER"
         # env:
         #   GITHUB_TOKEN: ${{ secrets.GRACE_TOKEN }}
         #   REPO_OWNER: 'gracepark' # Replace with your repository owner
