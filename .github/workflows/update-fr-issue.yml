@@ -37,15 +37,21 @@ jobs:
         id: format-table
         run: |
           INCIDENTS='${{steps.get-incidents.outputs.incidents}}'
+
+          echo "$INCIDENTS" | jq -r '
+            ["Incident Number", "Title", "Description", "Created At", "Updated At", "Status"],
+            ["----------------","-----------------------------------------------","------------------------------------","---------------------","---------------------","----------"],
+            (.[] | [.incident_number, .title, .description, .created_at, .updated_at, .status])
+            | @tsv'
+       
           TABLE=$(echo "$INCIDENTS" | jq -r '
             ["Incident Number", "Title", "Description", "Created At", "Updated At", "Status"],
-            (.[]
-              | [.incident_number, .title, .description, .created_at, .updated_at, .status]
-            ) | @tsv' | column -t -s $'\t' | awk '
-          BEGIN {
-            print "| Incident Number | Title                                         | Description                        | Created At          | Updated At          | Status   |"
-            print "|-----------------|-----------------------------------------------|------------------------------------|---------------------|---------------------|----------|"
-          }
+            ["----------------","-----------------------------------------------","------------------------------------","---------------------","---------------------","----------"],
+            (.[] | [.incident_number, .title, .description, .created_at, .updated_at, .status])
+            | @tsv' | column -t -s $'\t' | awk '
+
+          echo "$TABLE"
+
           {
             printf "| %-15s | %-45s | %-34s | %-19s | %-19s | %-8s |\n", $1, $2, $3, $4, $5, $6
           }')
