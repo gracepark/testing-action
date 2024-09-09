@@ -59,7 +59,7 @@ jobs:
       - name: Add comment to FR issue
         # if: ${{ steps.get-incidents.outputs.incident_count != '0' && steps.find-fr-issue.outputs.issue_url != '' }} 
         run: |
-          echo ${{ steps.find-fr-issue.outputs.issue_url }}
+          echo ${{ steps.find-fr-issue.outputs.result }}
         # env:
         #   GITHUB_TOKEN: ${{ secrets.GRACE_TOKEN }}
         #   REPO_OWNER: 'gracepark' # Replace with your repository owner
