@@ -39,14 +39,12 @@ jobs:
           INCIDENTS='${{steps.get-incidents.outputs.incidents}}'
 
           echo "$INCIDENTS" | jq -r '
-            ["Incident Number", "Title", "Description", "Created At", "Updated At", "Status"]
-            | (., map(length*"-"))),
+            ["Incident Number", "Title", "Description", "Created At", "Updated At", "Status"] | (., map(length*"-"))),
             (.[] | [.incident_number, .title, .description, .created_at, .updated_at, .status])
             | @tsv'
        
           TABLE=$(echo "$INCIDENTS" | jq -r '
-            ["Incident Number", "Title", "Description", "Created At", "Updated At", "Status"]
-            | (., map(length*"-"))),
+            ["Incident Number", "Title", "Description", "Created At", "Updated At", "Status"] | (., map(length*"-"))),
             (.[] | [.incident_number, .title, .description, .created_at, .updated_at, .status])
             | @tsv' | awk '
 
