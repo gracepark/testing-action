@@ -29,7 +29,7 @@ jobs:
           pagerduty_token: y_NbAkKc66ryYTWUXYEu # test token
           team_id: 'P3XDFGJ'  # test team ID
           date_range: 'all'
-          start_time: ${{ env.CURRENT_DATE_TIME }}  # Start of time range (ISO format)
+          start_time: ${{ env.CURRENT_DATE_TIME }}  # Stxart of time range (ISO format)
           end_time: ${{ env.PAST_DATE_TIME }}  # End of time range (ISO format)
       
       - name: Format incidents as Markdown table
@@ -37,7 +37,7 @@ jobs:
         id: format-table
         run: |
           INCIDENTS='${{steps.get-incidents.outputs.incidents}}'
-          TABLE=$(echo "$INCIDENTS" | jq '.[] | {incident_number: .incident_number, title: .title, description: .description, created_at: .created_at, updated_at: .updated_at, status: .status}')
+          TABLE=$(echo "$INCIDENTS" | jq '.[] | {incident_number: .incident_number, title: .title, description: .description, created_at: .created_at, updated_at: .updated_at, status: .status}'
           BEGIN {
             print "| Incident Number | Title                                         | Description                        | Created At          | Updated At          | Status   |"
             print "|-----------------|-----------------------------------------------|------------------------------------| --------------------| --------------------|----------|"
