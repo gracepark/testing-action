@@ -36,10 +36,21 @@ jobs:
         if: ${{ steps.get-incidents.outputs.incident_count > 0 }}
         id: format-table
         run: |
-          incidents_extracted=${{steps.get-incidents.outputs.incidents}} | jq '{incident_number, title, description}'
-          echo "Incidents Extracted: $incidents_extracted"
-          table="| Incident | Service | Summary | Created At |\n| --- | --- | --- | --- |\n"
-          done
+          incidents=${{steps.get-incidents.outputs.incidents}}
+          table=$(incidents | jq -r '
+          ["incident_number", "title", "description"],
+          (.[]
+            | [.incident_number, .title, .description]
+          ) | @tsv' | awk '
+          BEGIN {
+            print "| incident_number | title                         | description                    |"
+            print "|-----------------|-------------------------------|--------------------------------|"
+          }
+          {
+            printf "| %-15s | %-30s | %-30s |\n", $1, $2, $3
+          }')
+
+          # Set the markdown table as an output variable
           echo "::set-output name=table::${table}"
 
       - name: Find FR Issue
@@ -74,4 +85,4 @@ jobs:
 
             ${{ steps.format-table.outputs.table }}
 
-
+# [{"incident_number":1,"title":"Launch Vehicle Disintegrated","description":"Launch Vehicle Disintegrated","created_at":"2021-01-07T19:32:58Z","updated_at":"2021-01-07T19:36:03Z","status":"resolved"}, {"incident_number":2,"title":"Launch Vehicle Disintegrated","description":"Launch Vehicle Disintegrated","created_at":"2021-01-07T19:32:58Z","updated_at":"2021-01-07T19:36:03Z","status":"resolved"}]
