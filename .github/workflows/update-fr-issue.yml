@@ -37,13 +37,17 @@ jobs:
         id: format-table
         run: |
           INCIDENTS='${{steps.get-incidents.outputs.incidents}}'
-          TABLE=$(echo "$INCIDENTS" | jq '.[] | {incident_number: .incident_number, title: .title, description: .description, created_at: .created_at, updated_at: .updated_at, status: .status}'
+          TABLE=$(echo "$JSON_ARRAY" | jq -r '
+            ["Incident Number", "Title", "Description", "Created At", "Updated At", "Status"],
+            (.[]
+              | [.incident_number, .title, .description, .created_at, .updated_at, .status]
+            ) | @tsv' | awk '
           BEGIN {
             print "| Incident Number | Title                                         | Description                        | Created At          | Updated At          | Status   |"
-            print "|-----------------|-----------------------------------------------|------------------------------------| --------------------| --------------------|----------|"
+            print "|-----------------|-----------------------------------------------|------------------------------------|---------------------|---------------------|----------|"
           }
           {
-            printf "| %-15s | %-45s | %-34s | %-10s | %-10s | %-3s |\n", $1, $2, $3, $4, $5, $6 
+            printf "| %-15s | %-45s | %-34s | %-19s | %-19s | %-8s |\n", $1, $2, $3, $4, $5, $6
           }')
           echo "markdown_table<<EOF" >> $GITHUB_ENV
           echo "$TABLE" >> $GITHUB_ENV
