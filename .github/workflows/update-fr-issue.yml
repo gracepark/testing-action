@@ -4,7 +4,6 @@ on: workflow_dispatch
 
 jobs:
   update-fr-issue:
-    if: github.repository == 'gracepark/testing-action'
     runs-on: ubuntu-latest
     continue-on-error: true
     permissions:
