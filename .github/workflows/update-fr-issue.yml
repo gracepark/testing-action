@@ -35,15 +35,13 @@ jobs:
       - name: Find FR Issue
         uses: actions/github-script@60a0d83039c74a4aee543508d2ffcb1c3799cdea
         id: find-fr-issue
-        env:
-          github-token: ${{ secrets.GITHUB_TOKEN }}
-          GH_REPO: ${{ github.repository }}
         with: 
+          github-token: ${{ secrets.GITHUB_TOKEN }}
           result-encoding: string
           script: |
             const issues = await github.rest.gissues.listForRepo({
-                owner: 'github',
-                repo: 'web-systems',
+                owner: 'gracepark',
+                repo: 'testing-action',
                 labels: 'epic, on track',
                 state: 'open',
               })
