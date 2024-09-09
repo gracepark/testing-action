@@ -33,7 +33,7 @@ jobs:
           end_time: ${{ env.PAST_DATE_TIME }}  # End of time range (ISO format)
       
       - name: Format incidents as Markdown table
-        if: {{ steps.get-incidents.outputs.incident_count > 0 }}
+        if: ${{ steps.get-incidents.outputs.incident_count > 0 }}
         id: format-table
         run: |
           incidents=$(steps.get-incidents.outputs.incidents)
