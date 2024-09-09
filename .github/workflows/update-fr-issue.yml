@@ -49,8 +49,8 @@ jobs:
               const currentIssue = issues.data.find(issue => issue.title.includes('First Responder Work'))
               console.log(currentIssue)
               return { 
-                issue_url: currentIssue ? currentIssue.url.replace('api.github.com/repos', 'github.com') : '',
-                issue_number: currentIssue ? currentIssue.number : ''
+                url: currentIssue ? currentIssue.url.replace('api.github.com/repos', 'github.com') : '',
+                number: currentIssue ? currentIssue.number : ''
               }
             } catch (error) {
               console.log(error.message)
