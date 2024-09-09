@@ -31,6 +31,9 @@ jobs:
           date_range: 'all'
           start_time: ${{ env.CURRENT_DATE_TIME }}  # Start of time range (ISO format)
           end_time: ${{ env.PAST_DATE_TIME }}  # End of time range (ISO format)
+        run: |
+          echo "Found ${{ steps.get-incidents.outputs.incidents.length }} incidents"
+          echo "Incidents: ${{ steps.get-incidents.outputs.incidents }}"
 
       - name: Find FR Issue
         id: find-fr-issue
@@ -49,7 +52,7 @@ jobs:
               const currentIssue = issues.data.find(issue => issue.title.includes('First Responder Work'))
               console.log(currentIssue.url)
               return {
-                issue_url: currentIssue ? currentIssue.url : null
+                issue_url: currentIssue ? currentIssue.url.replace('api.github.com/repos', 'github.com') : null
               }
             } catch (error) {
               console.log(error.message)
