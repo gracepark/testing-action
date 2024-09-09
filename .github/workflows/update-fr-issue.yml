@@ -39,7 +39,7 @@ jobs:
           github-token: ${{ secrets.GITHUB_TOKEN }}
           result-encoding: string
           script: |
-            const issues = await github.rest.gissues.listForRepo({
+            const issues = await github.rest.issues.listForRepo({
                 owner: 'gracepark',
                 repo: 'testing-action',
                 labels: 'epic, on track',
