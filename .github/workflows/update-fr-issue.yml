@@ -24,10 +24,11 @@ jobs:
 
       - name: Get incidents list
         id: get-incidents
-        uses: gracepark/pagerduty-incidents-action@24deef423133f58269211dbf880647329c56143b
+        uses: gracepark/pagerduty-incidents-action@0b4e127bd9c6bf69d96cc45b0418695dc5c8a97d
         with:
           pagerduty_token: secrets.TEST_PAGERDUTY_TOKEN # test token
           team_id: 'P3XDFGJ'  # test team ID
+          date_range: 'all'
           start_time: ${{ env.CURRENT_DATE_TIME }}  # Start of time range (ISO format)
           end_time: ${{ env.PAST_DATE_TIME }}  # End of time range (ISO format)
 
