@@ -37,23 +37,8 @@ jobs:
         id: format-table
         run: |
           INCIDENTS=${{steps.get-incidents.outputs.incidents}}
-          TABLE=$(echo "$INCIDENTS" | jq -r '
-            ["incident_number", "title", "description"],
-            (.[]
-              | [.incident_number, .title, .description]
-            ) | @tsv' | awk '
-          BEGIN {
-            print "| incident_number | title                         | description                    |"
-            print "|-----------------|-------------------------------|--------------------------------|"
-          }
-          {
-            printf "| %-15s | %-30s | %-30s |\n", $1, $2, $3
-          }')
+          echo "$INCIDENTS" | jq -r '.[] | "\(.incident_number) \(.title) \(.description)"'
 
-          # Set the markdown table as an output variable
-          echo "markdown_table<<EOF" >> $GITHUB_ENV
-          echo "$TABLE" >> $GITHUB_ENV
-          echo "EOF" >> $GITHUB_ENV
 
       - name: Find FR Issue
         id: find-fr-issue
