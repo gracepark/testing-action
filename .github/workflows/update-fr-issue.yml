@@ -43,7 +43,7 @@ jobs:
               | [.incident_number, .title, .description, .created_at, .updated_at, .status]
             ) 
             
-          TABLE=$(echo EXTRACTED_KEY_INCIDENTS | @tsv' | awk '
+          TABLE=$(echo "$EXTRACTED_KEY_INCIDENTS" | @tsv' | awk '
           BEGIN {
             print "| Incident Number | Title                                         | Description                        | Created At          | Updated At          | Status   |"
             print "|-----------------|-----------------------------------------------|------------------------------------|---------------------|---------------------|----------|"
