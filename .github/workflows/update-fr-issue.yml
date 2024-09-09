@@ -34,7 +34,7 @@ jobs:
 
       - name: Update FR issue with incidents
         run: |
-          echo ${{ steps.get-incidents.outputs }}
+          echo ${{ steps.get-incidents.outputs.incidents }}
           
         # env:
         #   PAGERDUTY_TOKEN: ${{ secrets.TEST_PAGERDUTY_TOKEN }}
