@@ -39,15 +39,20 @@ jobs:
           github-token: ${{ secrets.GITHUB_TOKEN }}
           result-encoding: string
           script: |
-            const issues = await github.rest.issues.listForRepo({
-                owner: 'gracepark',
-                repo: 'testing-action',
-                labels: ['epic', 'on track'],
-                state: 'open',
-              })
-            console.log(issues.length)
-            const currentIssue = issues.data.find(issue => issue.title.includes('First Responder Work'))
-            return currentIssue ? currentIssue.number : null
+            try {
+              const issues = await github.rest.issues.listForRepo({
+                  owner: 'gracepark',
+                  repo: 'testing-action',
+                  labels: ['epic', 'on track'],
+                  state: 'open',
+                })
+              console.log(issues.length)
+              const currentIssue = issues.data.find(issue => issue.title.includes('First Responder Work'))
+              return currentIssue ? currentIssue.number : null
+            } catch (error) {
+              console.log(error.message)
+              console.error(error)
+            }
 
       - name: Add comment to FR issue
         if: ${{ steps.get-incidents.outputs.incidents.length > 0 && steps.find-fr-issue.outputs.result != null }} 
