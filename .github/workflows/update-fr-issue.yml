@@ -4,10 +4,11 @@ on: workflow_dispatch
 
 jobs:
   update-fr-issue:
+    if: github.repository == 'github/web-systems'
     runs-on: ubuntu-latest
     continue-on-error: true
-    outputs:
-      incidents: ${{ steps.get-incidents.outputs.incidents }}
+    permissions:
+      issues: write
     steps:
       - name: Checkout code
         uses: actions/checkout@v4
@@ -32,19 +33,34 @@ jobs:
           start_time: ${{ env.CURRENT_DATE_TIME }}  # Start of time range (ISO format)
           end_time: ${{ env.PAST_DATE_TIME }}  # End of time range (ISO format)
 
-      - name: Update FR issue with incidents
+      - name: Find FR Issue
+        uses: actions/github-script@e69ef5462fd455e02edcaf4dd7708eda96b9eda0
+        id: find-fr-issue
+        env:
+          github-token: ${{ secrets.GITHUB_TOKEN }}
+          GH_REPO: ${{ github.repository }}
+        with: 
+          result-encoding: string
+          script: |
+            const issues = await octokit.issues.listForRepo({
+                owner: 'github',
+                repo: 'web-systems',
+                labels: 'epic, on track',
+                state: 'open',
+              })
+            const currentIssue = issues.data.find(issue => issue.title.includes('First Responder Work'))
+            return currentIssue ? currentIssue.number : null
+
+      - name: Add comment to FR issue
+        if: ${{ steps.get-incidents.outputs.incidents.length > 0 && steps.find-fr-issue.outputs.result != null }} 
         run: |
-          echo ${{ steps.get-incidents.outputs.incidents }}
-          
+          echo ${{ steps.find-fr-issue.outputs.result }}
         # env:
-        #   PAGERDUTY_TOKEN: ${{ secrets.TEST_PAGERDUTY_TOKEN }}
         #   GITHUB_TOKEN: ${{ secrets.GRACE_TOKEN }}
-        #   TEAM_IDS: 'P0AWF24' # You can list multiple IDs separated by commas
         #   REPO_OWNER: 'gracepark' # Replace with your repository owner
         #   REPO_NAME: 'testing-action' # Replace with your repository name
         #   FR_LABEL: 'on-call' # Label to identify FR issues
         # with:
         #   github-token: ${{ secrets.GRACE_TOKEN }}
         #   script: |
-        #     const updateFRIssue = require('./workflow_scripts/update_fr_issue.js');
-        #     await updateFRIssue({ github, core });
+            
