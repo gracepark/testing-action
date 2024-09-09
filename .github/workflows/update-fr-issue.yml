@@ -65,9 +65,9 @@ jobs:
         # with:
         #   issue-number: ${{ steps.find-fr-issue.outputs.result }}
         run: |
-          echo ${{ steps.find-fr-issue.outputs.result }}
-          echo ${{ steps.find-fr-issue.outputs.result.issue_number }}
-          echo ${{ steps.find-fr-issue.outputs.result.issue_url }}
+          echo ${{ steps.find-fr-issue.outputs.result.issue_data }}
+          echo ${{ steps.find-fr-issue.outputs.result.issue_data.issue_number }}
+          echo ${{ steps.find-fr-issue.outputs.result.issue_data.issue_url }}
         # env:
         #   GITHUB_TOKEN: ${{ secrets.GRACE_TOKEN }}
         #   REPO_OWNER: 'gracepark' # Replace with your repository owner
