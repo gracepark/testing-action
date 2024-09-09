@@ -31,9 +31,6 @@ jobs:
           date_range: 'all'
           start_time: ${{ env.CURRENT_DATE_TIME }}  # Start of time range (ISO format)
           end_time: ${{ env.PAST_DATE_TIME }}  # End of time range (ISO format)
-        run: |
-          echo "Found ${{ steps.get-incidents.outputs.incidents.length }} incidents"
-          echo "Incidents: ${{ steps.get-incidents.outputs.incidents }}"
 
       - name: Find FR Issue
         id: find-fr-issue
