@@ -47,10 +47,10 @@ jobs:
                   state: 'open',
                 })
               const currentIssue = issues.data.find(issue => issue.title.includes('First Responder Work'))
+              console.log(currentIssue.url)
               return {
                 issue_url: currentIssue ? currentIssue.url : null
               }
-              console.log(currentIssue.url)
             } catch (error) {
               console.log(error.message)
               console.error(error)
