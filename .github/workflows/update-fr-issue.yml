@@ -37,11 +37,13 @@ jobs:
         id: format-table
         run: |
           INCIDENTS='${{steps.get-incidents.outputs.incidents}}'
-          TABLE=$(echo "$INCIDENTS" | jq -r '
+          EXTRACTED_KEY_INCIDENTS=$(echo "$INCIDENTS" | jq -r '
             ["Incident Number", "Title", "Description", "Created At", "Updated At", "Status"],
             (.[]
               | [.incident_number, .title, .description, .created_at, .updated_at, .status]
-            ) | @tsv' | awk '
+            ) 
+            
+          TABLE=$(echo EXTRACTED_KEY_INCIDENTS | @tsv' | awk '
           BEGIN {
             print "| Incident Number | Title                                         | Description                        | Created At          | Updated At          | Status   |"
             print "|-----------------|-----------------------------------------------|------------------------------------|---------------------|---------------------|----------|"
