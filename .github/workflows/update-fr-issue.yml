@@ -36,9 +36,9 @@ jobs:
         if: ${{ steps.get-incidents.outputs.incident_count > 0 }}
         id: format-table
         run: |
-          incidents=${{ steps.get-incidents.outputs.incidents }}
-          table="| Incident | Service | Summary | Created At |\n| --- | --- | --- | --- |\n" +
-            (to_entries | map("|\(.key)|\(.value)|") | join("\n"))
+          incidents_extracted=${{ steps.get-incidents.outputs.incidents | jq '{incident_number, title, description}' }}
+          echo "Incidents Extracted: $incidents_extracted"
+          table="| Incident | Service | Summary | Created At |\n| --- | --- | --- | --- |\n"
           done
           echo "::set-output name=table::${table}"
 
@@ -73,3 +73,5 @@ jobs:
             There are ${{ steps.get-incidents.outputs.incident_count }} incidents in the last 10 minutes. Please check if any of these incidents are related to the FR issue.
 
             ${{ steps.format-table.outputs.table }}
+
+
