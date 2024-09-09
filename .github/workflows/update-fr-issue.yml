@@ -49,10 +49,8 @@ jobs:
               const currentIssue = issues.data.find(issue => issue.title.includes('First Responder Work'))
               console.log(currentIssue)
               return { 
-                issue_data: JSON.stringify({
-                  issue_url: currentIssue ? currentIssue.url.replace('api.github.com/repos', 'github.com') : '',
-                  issue_number: currentIssue ? currentIssue.number : ''
-                })
+                issue_url: currentIssue ? currentIssue.url.replace('api.github.com/repos', 'github.com') : '',
+                issue_number: currentIssue ? currentIssue.number : ''
               }
             } catch (error) {
               console.log(error.message)
@@ -65,10 +63,9 @@ jobs:
         # with:
         #   issue-number: ${{ steps.find-fr-issue.outputs.result }}
         run: |
-          echo ${{ steps.find-fr-issue.outputs.issue_data }}
-          echo ${{ steps.find-fr-issue.outputs.result.issue_data }}
-          echo ${{ steps.find-fr-issue.outputs.result.issue_data.issue_number }}
-          echo ${{ steps.find-fr-issue.outputs.result.issue_data.issue_url }}
+          echo ${{ steps.find-fr-issue.outputs.result }}
+          echo ${{ steps.find-fr-issue.outputs.result.issue_url }}
+          echo ${{ steps.find-fr-issue.outputs.result.issue_number }}
         # env:
         #   GITHUB_TOKEN: ${{ secrets.GRACE_TOKEN }}
         #   REPO_OWNER: 'gracepark' # Replace with your repository owner
