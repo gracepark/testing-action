@@ -49,7 +49,7 @@ jobs:
               const currentIssue = issues.data.find(issue => issue.title.includes('First Responder Work'))
               console.log(currentIssue.url.replace('api.github.com/repos', 'github.com'))
               return {
-                issue_url: currentIssue ? currentIssue.url.replace('api.github.com/repos', 'github.com') : ''
+                issue_url: currentIssue ? currentIssue.url.replace('api.github.com/repos', 'github.com') : 'hola'
               }
             } catch (error) {
               console.log(error.message)
@@ -59,7 +59,6 @@ jobs:
       - name: Add comment to FR issue
         # if: ${{ steps.get-incidents.outputs.incident_count != '0' && steps.find-fr-issue.outputs.issue_url != '' }} 
         run: |
-          echo "Incident count: ${{ steps.get-incidents.outputs.incident_count }}"
           echo ${{ steps.find-fr-issue.outputs.issue_url }}
         # env:
         #   GITHUB_TOKEN: ${{ secrets.GRACE_TOKEN }}
