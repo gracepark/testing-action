@@ -50,6 +50,7 @@ jobs:
               return {
                 issue_url: currentIssue ? currentIssue.url : null
               }
+              console.log(currentIssue.url)
             } catch (error) {
               console.log(error.message)
               console.error(error)
