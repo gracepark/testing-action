@@ -36,12 +36,12 @@ jobs:
         if: ${{ steps.get-incidents.outputs.incident_count > 0 }}
         id: format-table
         run: |
-          incidents=${{steps.get-incidents.outputs.incidents}}
-          table=$(incidents | jq -r '
-          ["incident_number", "title", "description"],
-          (.[]
-            | [.incident_number, .title, .description]
-          ) | @tsv' | awk '
+          INCIDENTS=${{steps.get-incidents.outputs.incidents}}
+          TABLE=$(echo "$INCIDENTS" | jq -r '
+            ["incident_number", "title", "description"],
+            (.[]
+              | [.incident_number, .title, .description]
+            ) | @tsv' | awk '
           BEGIN {
             print "| incident_number | title                         | description                    |"
             print "|-----------------|-------------------------------|--------------------------------|"
@@ -51,7 +51,9 @@ jobs:
           }')
 
           # Set the markdown table as an output variable
-          echo "::set-output name=table::${table}"
+          echo "markdown_table<<EOF" >> $GITHUB_ENV
+          echo "$TABLE" >> $GITHUB_ENV
+          echo "EOF" >> $GITHUB_ENV
 
       - name: Find FR Issue
         id: find-fr-issue
