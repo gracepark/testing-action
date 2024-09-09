@@ -36,7 +36,7 @@ jobs:
         if: ${{ steps.get-incidents.outputs.incident_count > 0 }}
         id: format-table
         run: |
-          INCIDENTS=${{steps.get-incidents.outputs.incidents}}
+          INCIDENTS="${{steps.get-incidents.outputs.incidents}}"
           echo "$INCIDENTS" | jq -r '.[] | "\(.incident_number) \(.title) \(.description)"'
 
 
