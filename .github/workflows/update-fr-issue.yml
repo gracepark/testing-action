@@ -65,6 +65,7 @@ jobs:
         # with:
         #   issue-number: ${{ steps.find-fr-issue.outputs.result }}
         run: |
+          echo ${{ steps.find-fr-issue.outputs.issue_data }}
           echo ${{ steps.find-fr-issue.outputs.result.issue_data }}
           echo ${{ steps.find-fr-issue.outputs.result.issue_data.issue_number }}
           echo ${{ steps.find-fr-issue.outputs.result.issue_data.issue_url }}
