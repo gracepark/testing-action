@@ -37,12 +37,8 @@ jobs:
         id: format-table
         run: |
           incidents=${{ steps.get-incidents.outputs.incidents }}
-          table="| Incident | Service | Summary | Created At |\n| --- | --- | --- | --- |\n"
-          for row in $(echo "${incidents}" | jq -r '.[] | @base64'); do
-            _jq() {
-              echo ${row} | base64 --decode | jq -r ${1}
-            }
-            table="${table}| $(_jq '.incident') | $(_jq '.service') | $(_jq '.summary') | $(_jq '.created_at') |\n"
+          table="| Incident | Service | Summary | Created At |\n| --- | --- | --- | --- |\n" +
+            (to_entries | map("|\(.key)|\(.value)|") | join("\n"))
           done
           echo "::set-output name=table::${table}"
 
