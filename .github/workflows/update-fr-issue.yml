@@ -40,12 +40,12 @@ jobs:
 
           echo "$INCIDENTS" | jq -r '
             ["Incident Number", "Title", "Description", "Created At", "Updated At", "Status"] as $headers
-            as $headers, (.[] | [.incident_number, .title, .description, .created_at, .updated_at, .status])
+            | $headers, (.[] | [.incident_number, .title, .description, .created_at, .updated_at, .status])
             | @tsv'
        
           TABLE=$(echo "$INCIDENTS" | jq -r '
             ["Incident Number", "Title", "Description", "Created At", "Updated At", "Status"] as $headers
-            as $headers, (.[] | [.incident_number, .title, .description, .created_at, .updated_at, .status])
+            | $headers, (.[] | [.incident_number, .title, .description, .created_at, .updated_at, .status])
             | @tsv' | awk '
 
           echo "$TABLE"
