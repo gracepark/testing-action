@@ -33,8 +33,8 @@ jobs:
           end_time: ${{ env.PAST_DATE_TIME }}  # End of time range (ISO format)
 
       - name: Find FR Issue
-        uses: actions/github-script@60a0d83039c74a4aee543508d2ffcb1c3799cdea
         id: find-fr-issue
+        uses: actions/github-script@60a0d83039c74a4aee543508d2ffcb1c3799cdea
         with: 
           github-token: ${{ secrets.GITHUB_TOKEN }}
           result-encoding: string
@@ -46,19 +46,19 @@ jobs:
                   labels: 'epic,on track',
                   state: 'open',
                 })
-              console.log(issues, 'ISSUES')
               const currentIssue = issues.data.find(issue => issue.title.includes('First Responder Work'))
-              console.log(currentIssue, 'CURRENT ISSUE')
-              return currentIssue ? currentIssue.number : null
+              return {
+                issue_url: currentIssue ? currentIssue.url : null
+              }
             } catch (error) {
               console.log(error.message)
               console.error(error)
             }
 
       - name: Add comment to FR issue
-        if: ${{ steps.get-incidents.outputs.incidents.length > 0 && steps.find-fr-issue.outputs.result != null }} 
+        if: ${{ steps.get-incidents.outputs.incidents.length > 0 && steps.find-fr-issue.outputs.issue_url != null }} 
         run: |
-          echo ${{ steps.find-fr-issue.outputs.result }}
+          echo ${{ steps.find-fr-issue.outputs.issue_url }}
         # env:
         #   GITHUB_TOKEN: ${{ secrets.GRACE_TOKEN }}
         #   REPO_OWNER: 'gracepark' # Replace with your repository owner
