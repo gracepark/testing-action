@@ -73,9 +73,9 @@ jobs:
             printf "| %-*s | %-*s | %-*s | %-*s | %-*s | %-*s |\n", width[1], header[1], width[2], header[2], width[3], header[3], width[4], header[4], width[5], header[5], width[6], header[6]
             separator = "|"
             for (i = 1; i <= 6; i++) {
-              separator = separator sprintf("%s", sprintf("%*s", width[i], "") | gsub(/ /, "-")) "|"
+              separator = separator sprintf("%s", "-" (width[i] + 2)) "|"
             }
-            printf "%s\n", separator
+            print separator
 
             for (i = 2; i <= NR; i++) {
               split(data[i], fields, "\t")
