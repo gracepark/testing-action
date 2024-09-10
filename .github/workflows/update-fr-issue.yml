@@ -33,7 +33,7 @@ jobs:
           date_range: 'all'
           start_time: ${{ env.CURRENT_DATE_TIME }} # ISO format 
           end_time: ${{ env.PAST_DATE_TIME }}  # ISO format
-          statuses: 'triggered,acknowledged' # comma separated
+          statuses: 'triggered,resolved' # comma separated
       
       - name: Format incidents as Markdown table
         if: ${{ steps.get-incidents.outputs.incident_count > 0 }}
