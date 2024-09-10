@@ -122,7 +122,7 @@ jobs:
           issue-number: ${{ steps.find-fr-issue.outputs.result }}
           body: |
             ## New PagerDuty Incidents Report
-            There are ${{ steps.get-incidents.outputs.incident_count }} incidents in the last 10 minutes. Please view the incidents below:
+            There were ${{ steps.get-incidents.outputs.incident_count }} incidents in the last 10 minutes. Please view the incidents below:
 
             ${{ env.markdown_table }}"
       
@@ -135,7 +135,7 @@ jobs:
           edit-mode: replace
           body: |
             ## New PagerDuty Incidents Report (Updated: ${{ env.CURRENT_READABLE_DATE_TIME }})
-            There are ${{ steps.get-incidents.outputs.incident_count }} incidents in the last 10 minutes. Please view the incidents below:
+            There were ${{ steps.get-incidents.outputs.incident_count }} incidents in the last 10 minutes. Please view the incidents below:
 
             ${{ env.markdown_table }}"
 
