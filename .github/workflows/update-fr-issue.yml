@@ -63,10 +63,7 @@ jobs:
             width[4] = length(header[4])
             width[5] = length(header[5])
             width[6] = length(header[6])
-            # printf "| %-*s | %-*s | %-*s | %-*s | %-*s | %-*s |\n", width[1], header[1], width[2], header[2], width[3], header[3], width[4], header[4], width[5], header[5], width[6], header[6]
-            for (i = 1; i <= 6; i++) {
-              sep = sep sprintf("%-*s-+", width[i], "")
-            }
+            printf "| %-*s | %-*s | %-*s | %-*s | %-*s | %-*s |\n", width[1], header[1], width[2], header[2], width[3], header[3], width[4], header[4], width[5], header[5], width[6], header[6]
           }')
           echo "markdown_table<<EOF" >> $GITHUB_ENV
           echo "$TABLE" >> $GITHUB_ENV
