@@ -78,7 +78,7 @@ jobs:
             }
             printf "|\n"
 
-            for (i = 1; i <= NR; i++) {
+            for (i = 2; i <= NR; i++) {
               split(data[i], fields, "\t")
               printf "| %-*s | %-*s | %-*s | %-*s | %-*s | %-*s |\n", width[1], fields[1], width[2], fields[2], width[3], fields[3], width[4], fields[4], width[5], fields[5], width[6], fields[6]
             }
