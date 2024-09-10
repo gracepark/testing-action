@@ -48,12 +48,54 @@ jobs:
             | $headers, (.[] | [.incident_number, .title, .description, .created_at, .updated_at, .status])
             | @tsv' | awk '
           BEGIN {
-            print "| Incident Number | Title                                         | Description                        | Created At          | Updated At          | Status   |"
-            print "|-----------------|-----------------------------------------------|------------------------------------|---------------------|---------------------|----------|"
-          }
-          NR > 1 {
-            printf "| %-*s | %-*s | %-*s | %-*s | %-*s | %-*s |\n", width[1], $1, width[2], $2, width[3], $3, width[4], $4, width[5], $5, width[6], $6
-          }')
+            header[1] = "Incident Number"
+            header[2] = "Title"
+            header[3] = "Description"
+            header[4] = "Created At"
+            header[5] = "Updated At"
+            header[6] = "Status"
+            
+            # Initialize max widths based on header lengths
+            width[1] = length(header[1])
+            width[2] = length(header[2])
+            width[3] = length(header[3])
+            width[4] = length(header[4])
+            width[5] = length(header[5])
+            width[6] = length(header[6])
+            
+            # Store the rows in an array
+            while (getline > 0) {
+              split($0, fields, "\t")
+              for (i = 1; i <= 6; i++) {
+                if (length(fields[i]) > width[i]) {
+                  width[i] = length(fields[i])
+                }
+              }
+              data[NR] = $0
+            }
+
+            # Print header row
+            printf "| %-*s | %-*s | %-*s | %-*s | %-*s | %-*s |\n", width[1], header[1], width[2], header[2], width[3], header[3], width[4], header[4], width[5], header[5], width[6], header[6]
+            
+            # Print separator row
+            printf "|%s|%s|%s|%s|%s|%s|\n", 
+              sprintf("%s", strftime(width[1], "-")), 
+              sprintf("%s", strftime(width[2], "-")), 
+              sprintf("%s", strftime(width[3], "-")), 
+              sprintf("%s", strftime(width[4], "-")), 
+              sprintf("%s", strftime(width[5], "-")), 
+              sprintf("%s", strftime(width[6], "-"))
+
+            # Define function to create the separator string
+            function strftime(width, char) {
+              return sprintf("%*s", width, "")
+            }
+            
+            # Print data rows
+            for (i = 1; i <= NR; i++) {
+              split(data[i], fields, "\t")
+              printf "| %-*s | %-*s | %-*s | %-*s | %-*s | %-*s |\n", width[1], fields[1], width[2], fields[2], width[3], fields[3], width[4], fields[4], width[5], fields[5], width[6], fields[6]
+            }
           echo "markdown_table<<EOF" >> $GITHUB_ENV
           echo "$TABLE" >> $GITHUB_ENV
           echo "EOF" >> $GITHUB_ENV
