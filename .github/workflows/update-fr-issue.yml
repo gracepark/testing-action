@@ -115,8 +115,9 @@ jobs:
           issue-number: ${{ steps.find-fr-issue.outputs.result }}
           body-includes: New Incidents
           comment-author: github-actions
-        - run: |
-            echo ${{ steps.existing-comment.outputs.comment-id }}
+    
+      - run: |
+          echo ${{ steps.existing-comment.outputs.comment-id }}
 
       - name: Add comment to FR issue
         if: ${{ steps.get-incidents.outputs.incident_count > 0 && steps.find-fr-issue.outputs.result != '' && steps.existing-comment.outputs.comment-id == '' }}
