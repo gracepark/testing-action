@@ -16,8 +16,10 @@ jobs:
         id: datetime
         run: |
           CURRENT_DATE_TIME=$(date -u +"%Y-%m-%dT%H:%M:%SZ")
+          CURRENT_READABLE_DATE_TIME=$(date +"%Y-%m-%d %H:%M:%S.%3N")
           echo "Current date and time: $CURRENT_DATE_TIME"
           echo "DATE_TIME=$CURRENT_DATE_TIME" >> $GITHUB_ENV
+          
           PAST_DATE_TIME=$(date -u -d "$CURRENT_DATE_TIME - 10 minutes" +"%Y-%m-%dT%H:%M:%SZ")
           echo "Date and time 10 minutes ago: $PAST_DATE_TIME"
           echo "PAST_DATE_TIME=$PAST_DATE_TIME" >> $GITHUB_ENV
@@ -137,7 +139,7 @@ jobs:
           comment-id: ${{ steps.existing-comment.outputs.comment-id }}
           edit-mode: replace
           body: |
-            ## New Incidents (Updated: ${{ $(date -d"$DATE" '+%Y-%m-%d:%H:%M') }})
+            ## New Incidents (Updated: ${{ env.CURRENT_READABLE_DATE_TIME }})
             There are ${{ steps.get-incidents.outputs.incident_count }} incidents in the last 10 minutes. Please view the incidents below:
 
             ${{ env.markdown_table }}"
