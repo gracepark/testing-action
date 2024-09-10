@@ -113,7 +113,7 @@ jobs:
         id: existing-comment
         with:
           issue-number: ${{ steps.find-fr-issue.outputs.result }}
-          body-includes: New Incidents
+          body-includes: '## New Incidents'
           comment-author: github-actions
     
       - run: |
