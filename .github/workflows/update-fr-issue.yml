@@ -26,14 +26,14 @@ jobs:
 
       - name: Get incidents list
         id: get-incidents
-        uses: gracepark/pagerduty-incidents-action@3792ed11e403afc36034e1641ebf4f088b1e789f
+        uses: gracepark/pagerduty-incidents-action@0ffa3ec37fd57a9e49bbde2cb6bbeb79b2284bf6
         with:
           pagerduty_token: y_NbAkKc66ryYTWUXYEu # test token
           team_id: 'P3XDFGJ'  # test team ID
           date_range: 'all'
           start_time: ${{ env.CURRENT_DATE_TIME }} # ISO format 
           end_time: ${{ env.PAST_DATE_TIME }}  # ISO format
-          statuses: 'triggered,acknowledged'
+          statuses: 'triggered,acknowledged' # comma separated
       
       - name: Format incidents as Markdown table
         if: ${{ steps.get-incidents.outputs.incident_count > 0 }}
