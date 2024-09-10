@@ -109,11 +109,11 @@ jobs:
             }
       
       - name: Find comment if it exists
-        uses: peter-evans/find-comment@v3
+        uses: peter-evans/find-comment@3eae4d37986fb5a8592848f6a574fdf654e61f9e
         id: existing-comment
         with:
           issue-number: ${{ steps.find-fr-issue.outputs.result }}
-          body-includes: '## New Incidents'
+          body-regex: '\s*##\s*New\s*Incidents\s*'
           comment-author: github-actions
     
       - run: |
@@ -126,7 +126,7 @@ jobs:
           issue-number: ${{ steps.find-fr-issue.outputs.result }}
           body: |
             ## New Incidents
-            There are ${{ steps.get-incidents.outputs.incident_count }} incidents in the last 10 minutes. Please check if any of these incidents are related to the FR issue.
+            There are ${{ steps.get-incidents.outputs.incident_count }} incidents in the last 10 minutes. Please view the incidents below:
 
             ${{ env.markdown_table }}"
       
@@ -138,7 +138,7 @@ jobs:
           comment-id: ${{ steps.existing-comment.outputs.comment-id }}
           body: |
             ## New Incidents
-            There are ${{ steps.get-incidents.outputs.incident_count }} incidents in the last 10 minutes. Please check if any of these incidents are related to the FR issue.
+            There are ${{ steps.get-incidents.outputs.incident_count }} incidents in the last 10 minutes. Please view the incidents below:
 
             ${{ env.markdown_table }}"
 
