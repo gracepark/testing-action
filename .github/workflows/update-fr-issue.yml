@@ -113,7 +113,7 @@ jobs:
         id: existing-comment
         with:
           issue-number: ${{ steps.find-fr-issue.outputs.result }}
-          body-regex: '\s*##\s*New\s*Incidents\s*'
+          body-regex: '^.*New incidents.*$'
           comment-author: github-actions
     
       - run: |
