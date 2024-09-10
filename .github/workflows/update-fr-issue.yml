@@ -10,19 +10,19 @@ jobs:
       issues: write
     steps:
       - name: Checkout code
-        uses: actions/checkout@v4
+        uses: actions/checkout@692973e3d937129bcbf40652eb9f2f61becf3332
 
       - name: Get current date and time
         id: datetime
         run: |
           CURRENT_DATE_TIME=$(date -u +"%Y-%m-%dT%H:%M:%SZ")
-          CURRENT_READABLE_DATE_TIME=$(date +"%Y-%m-%d %H:%M:%S %Z")
-          echo "CURRENT_READABLE_DATE_TIME=$CURRENT_READABLE_DATE_TIME" >> $GITHUB_ENV
           echo "DATE_TIME=$CURRENT_DATE_TIME" >> $GITHUB_ENV
-          
+
           PAST_DATE_TIME=$(date -u -d "$CURRENT_DATE_TIME - 10 minutes" +"%Y-%m-%dT%H:%M:%SZ")
-          echo "Date and time 10 minutes ago: $PAST_DATE_TIME"
           echo "PAST_DATE_TIME=$PAST_DATE_TIME" >> $GITHUB_ENV
+
+          CURRENT_READABLE_DATE_TIME=$(date +"%Y-%m-%d %H:%M:%S %Z")
+          echo "CURRENT_READABLE_DATE_TIME=$CURRENT_READABLE_DATE_TIME" >> $GITHUB_ENV 
 
       - name: Get incidents list
         id: get-incidents
@@ -31,8 +31,8 @@ jobs:
           pagerduty_token: y_NbAkKc66ryYTWUXYEu # test token
           team_id: 'P3XDFGJ'  # test team ID
           date_range: 'all'
-          start_time: ${{ env.CURRENT_DATE_TIME }}  # Stxart of time range (ISO format)
-          end_time: ${{ env.PAST_DATE_TIME }}  # End of time range (ISO format)
+          start_time: ${{ env.CURRENT_DATE_TIME }} # ISO format 
+          end_time: ${{ env.PAST_DATE_TIME }}  # ISO format
       
       - name: Format incidents as Markdown table
         if: ${{ steps.get-incidents.outputs.incident_count > 0 }}
@@ -103,10 +103,8 @@ jobs:
                   state: 'open',
                 })
               const currentIssue = issues.data.find(issue => issue.title.includes('First Responder Work'))
-              console.log(currentIssue.number)
               return currentIssue ? currentIssue.number : ''
             } catch (error) {
-              console.log(error.message)
               console.error(error)
             }
       
@@ -115,10 +113,7 @@ jobs:
         id: existing-comment
         with:
           issue-number: ${{ steps.find-fr-issue.outputs.result }}
-          body-includes: New Incidents
-    
-      - run: |
-          echo ${{ steps.existing-comment.outputs.comment-id }}
+          body-includes: New PagerDuty Incidents Report
 
       - name: Add comment to FR issue if comment does not exist
         if: ${{ steps.get-incidents.outputs.incident_count > 0 && steps.find-fr-issue.outputs.result != '' && steps.existing-comment.outputs.comment-id == '' }}
@@ -126,7 +121,7 @@ jobs:
         with:
           issue-number: ${{ steps.find-fr-issue.outputs.result }}
           body: |
-            ## New Incidents
+            ## New PagerDuty Incidents Report
             There are ${{ steps.get-incidents.outputs.incident_count }} incidents in the last 10 minutes. Please view the incidents below:
 
             ${{ env.markdown_table }}"
@@ -139,7 +134,7 @@ jobs:
           comment-id: ${{ steps.existing-comment.outputs.comment-id }}
           edit-mode: replace
           body: |
-            ## New Incidents (Updated: ${{ env.CURRENT_READABLE_DATE_TIME }})
+            ## New PagerDuty Incidents Report (Updated: ${{ env.CURRENT_READABLE_DATE_TIME }})
             There are ${{ steps.get-incidents.outputs.incident_count }} incidents in the last 10 minutes. Please view the incidents below:
 
             ${{ env.markdown_table }}"
