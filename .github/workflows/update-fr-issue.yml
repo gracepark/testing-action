@@ -16,7 +16,7 @@ jobs:
         id: datetime
         run: |
           CURRENT_DATE_TIME=$(date -u +"%Y-%m-%dT%H:%M:%SZ")
-          CURRENT_READABLE_DATE_TIME=$(date +"%Y-%m-%d %H:%M:%S.%3N")
+          CURRENT_READABLE_DATE_TIME=$(date +"%Y-%m-%d %H:%M:%S %Z")
           echo "CURRENT_READABLE_DATE_TIME=$CURRENT_DATE_TIME" >> $GITHUB_ENV
           echo "DATE_TIME=$CURRENT_DATE_TIME" >> $GITHUB_ENV
           
