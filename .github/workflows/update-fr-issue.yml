@@ -73,7 +73,7 @@ jobs:
             printf "| %-*s | %-*s | %-*s | %-*s | %-*s | %-*s |\n", width[1], header[1], width[2], header[2], width[3], header[3], width[4], header[4], width[5], header[5], width[6], header[6]
             printf "|"
             for (i = 1; i <= 6; i++) {
-              printf "%s", str_repeat(width[i], "-")
+              printf "%s", sprintf("%*s", width[i] + 2, " ") | gsub(" ", "-", $0)
               if (i < 6) printf "|"
             }
             printf "|\n"
@@ -81,13 +81,6 @@ jobs:
             for (i = 1; i <= NR; i++) {
               split(data[i], fields, "\t")
               printf "| %-*s | %-*s | %-*s | %-*s | %-*s | %-*s |\n", width[1], fields[1], width[2], fields[2], width[3], fields[3], width[4], fields[4], width[5], fields[5], width[6], fields[6]
-            }
-            function str_repeat(count, char) {
-              result = ""
-              for (i = 1; i <= count; i++) {
-                result = result char
-              }
-              return result
             }
           }')
 
