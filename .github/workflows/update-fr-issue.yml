@@ -17,7 +17,7 @@ jobs:
         run: |
           CURRENT_DATE_TIME=$(date -u +"%Y-%m-%dT%H:%M:%SZ")
           CURRENT_READABLE_DATE_TIME=$(date +"%A, %B %d, %Y %I:%M:%S %p %Z")
-          echo "CURRENT_READABLE_DATE_TIME=$CURRENT_DATE_TIME" >> $GITHUB_ENV
+          echo "CURRENT_READABLE_DATE_TIME=$CURRENT_READABLE_DATE_TIME" >> $GITHUB_ENV
           echo "DATE_TIME=$CURRENT_DATE_TIME" >> $GITHUB_ENV
           
           PAST_DATE_TIME=$(date -u -d "$CURRENT_DATE_TIME - 10 minutes" +"%Y-%m-%dT%H:%M:%SZ")
