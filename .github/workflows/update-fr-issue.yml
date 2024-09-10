@@ -73,7 +73,7 @@ jobs:
             printf "| %-*s | %-*s | %-*s | %-*s | %-*s | %-*s |\n", width[1], header[1], width[2], header[2], width[3], header[3], width[4], header[4], width[5], header[5], width[6], header[6]
             separator = "|"
             for (i = 1; i <= 6; i++) {
-              separator = separator sprintf("%s", "-" (width[i] + 2)) "|"
+              separator = separator sprintf("%s", substr("-------------------------------------------------", 1, width[i] + 2)) "|"
             }
             print separator
 
