@@ -118,7 +118,7 @@ jobs:
       - run: |
           echo ${{ steps.existing-comment.outputs.comment-id }}
 
-      - name: Add comment to FR issue
+      - name: Add comment to FR issue if comment does not exist
         if: ${{ steps.get-incidents.outputs.incident_count > 0 && steps.find-fr-issue.outputs.result != '' && steps.existing-comment.outputs.comment-id == '' }}
         uses: peter-evans/create-or-update-comment@71345be0265236311c031f5c7866368bd1eff043
         with:
@@ -129,14 +129,15 @@ jobs:
 
             ${{ env.markdown_table }}"
       
-      - name: Update comment on FR issue
+      - name: Update comment on FR issue if comment
         if: ${{ steps.get-incidents.outputs.incident_count > 0 && steps.find-fr-issue.outputs.result != '' && steps.existing-comment.outputs.comment-id != '' }}
         uses: peter-evans/create-or-update-comment@71345be0265236311c031f5c7866368bd1eff043
         with:
           issue-number: ${{ steps.existing-comment.outputs.comment-id }}
           comment-id: ${{ steps.existing-comment.outputs.comment-id }}
+          edit-mode: replace
           body: |
-            ## New Incidents
+            ## New Incidents (Updated: $(date -d"$DATE" '+%Y-%m-%d:%H:%M'))
             There are ${{ steps.get-incidents.outputs.incident_count }} incidents in the last 10 minutes. Please view the incidents below:
 
             ${{ env.markdown_table }}"
