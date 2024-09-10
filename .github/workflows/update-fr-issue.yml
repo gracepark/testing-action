@@ -114,7 +114,6 @@ jobs:
         with:
           issue-number: ${{ steps.find-fr-issue.outputs.result }}
           body-regex: '^.*New Incidents.*$'
-          comment-author: github-actions
     
       - run: |
           echo ${{ steps.existing-comment.outputs.comment-id }}
