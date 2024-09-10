@@ -26,7 +26,7 @@ jobs:
 
       - name: Get incidents list
         id: get-incidents
-        uses: gracepark/pagerduty-incidents-action@5d601f6bceaf11058711f03db7f8362336324c44
+        uses: gracepark/pagerduty-incidents-action@f9f4fe600d4160235df96f38b5524c1f57afe282
         with:
           pagerduty_token: y_NbAkKc66ryYTWUXYEu # test token
           team_id: 'P3XDFGJ'  # test team ID
