@@ -37,12 +37,6 @@ jobs:
         id: format-table
         run: |
           INCIDENTS='${{steps.get-incidents.outputs.incidents}}'
-
-          echo "$INCIDENTS" | jq -r '
-            ["Incident Number", "Title", "Description", "Created At", "Updated At", "Status"] as $headers
-            | $headers, (.[] | [.incident_number, .title, .description, .created_at, .updated_at, .status])
-            | @tsv'
-       
           TABLE=$(echo "$INCIDENTS" | jq -r '
             ["Incident Number", "Title", "Description", "Created At", "Updated At", "Status"] as $headers
             | $headers, (.[] | [.incident_number, .title, .description, .created_at, .updated_at, .status])
@@ -61,6 +55,7 @@ jobs:
             width[5] = length(header[5])
             width[6] = length(header[6])
 
+            # Read and process input
             while (getline > 0) {
               split($0, fields, "\t")
               for (i = 1; i <= 6; i++) {
@@ -70,13 +65,17 @@ jobs:
               }
               data[NR] = $0
             }
+            # Print header row
             printf "| %-*s | %-*s | %-*s | %-*s | %-*s | %-*s |\n", width[1], header[1], width[2], header[2], width[3], header[3], width[4], header[4], width[5], header[5], width[6], header[6]
+            
+            # Print separator row based on the calculated widths
             separator = "|"
             for (i = 1; i <= 6; i++) {
               separator = separator sprintf("%s", substr("-------------------------------------------------", 1, width[i] + 2)) "|"
             }
             print separator
 
+            # Print data rows
             for (i = 2; i <= NR; i++) {
               split(data[i], fields, "\t")
               printf "| %-*s | %-*s | %-*s | %-*s | %-*s | %-*s |\n", width[1], fields[1], width[2], fields[2], width[3], fields[3], width[4], fields[4], width[5], fields[5], width[6], fields[6]
