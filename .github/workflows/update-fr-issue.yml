@@ -47,9 +47,6 @@ jobs:
             ["Incident Number", "Title", "Description", "Created At", "Updated At", "Status"] as $headers
             | $headers, (.[] | [.incident_number, .title, .description, .created_at, .updated_at, .status])
             | @tsv' | awk '
-
-          echo "$TABLE"
-
           BEGIN{
             header[1] = "Incident Number"
             header[2] = "Title"
@@ -64,8 +61,9 @@ jobs:
             width[5] = length(header[5])
             width[6] = length(header[6])
             printf "| %-*s | %-*s | %-*s | %-*s | %-*s | %-*s |\n", width[1], header[1], width[2], header[2], width[3], header[3], width[4], header[4], width[5], header[5], width[6], header[6]
+          }
+          {
             printf "| %-15s | %-45s | %-34s | %-19s | %-19s | %-8s |\n", $1, $2, $3, $4, $5, $6
-
           }')
           echo "markdown_table<<EOF" >> $GITHUB_ENV
           echo "$TABLE" >> $GITHUB_ENV
