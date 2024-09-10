@@ -137,7 +137,7 @@ jobs:
           comment-id: ${{ steps.existing-comment.outputs.comment-id }}
           edit-mode: replace
           body: |
-            ## New Incidents (Updated: $(date -d"$DATE" '+%Y-%m-%d:%H:%M'))
+            ## New Incidents (Updated: ${{ $(date -d"$DATE" '+%Y-%m-%d:%H:%M') }})
             There are ${{ steps.get-incidents.outputs.incident_count }} incidents in the last 10 minutes. Please view the incidents below:
 
             ${{ env.markdown_table }}"
