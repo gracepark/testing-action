@@ -11,4 +11,4 @@ jobs:
         env:
           GITHUB_TOKEN: ${{ secrets.GRACE_TOKEN }}
         with:
-          filename: .github/ISSUE_TEMPLATE/FR_template.md
+          filename: .github/ISSUE_TEMPLATE/FR-template.md
