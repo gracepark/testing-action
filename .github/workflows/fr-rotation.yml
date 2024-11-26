@@ -7,6 +7,16 @@ jobs:
     runs-on: ubuntu-latest
     steps:
       - uses: actions/checkout@v3
+      - name: Set date range for query
+        run: |
+          export START_DATE="$(date +'%Y-%m-%d' -d '+1 day')"
+          echo "ONCALL_START_DATE=$START_DATE" >> $GITHUB_ENV
+          export END_DATE="$(date +'%Y-%m-%d' -d '+2 day')"
+          echo "ONCALL_END_DATE=$END_DATE" >> $GITHUB_ENV
+          export NEXT_START_DATE="$(date +'%Y-%m-%d' -d '+8 day')"
+          echo "NEXT_ONCALL_START_DATE=$NEXT_START_DATE" >> $GITHUB_ENV
+          export NEXT_END_DATE="$(date +'%Y-%m-%d' -d '+9 day')"
+          echo "NEXT_ONCALL_END_DATE=$NEXT_END_DATE" >> $GITHUB_ENV
       - uses: JasonEtco/create-an-issue@1b14a70e4d8dc185e5cc76d3bec9eab20257b2c5 # v2.9.2
         env:
           GITHUB_TOKEN: ${{ secrets.GRACE_TOKEN }}
