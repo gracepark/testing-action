@@ -11,7 +11,7 @@ jobs:
         run: |
           export START_DATE="$(date +'%Y-%m-%d' -d '+1 day')"
           echo "ONCALL_START_DATE=$START_DATE" >> $GITHUB_ENV
-          export END_DATE="$(date +'%Y-%m-%d' -d '+2 day')"
+          export END_DATE="$(date +'%Y-%m-%d' -d '+5 day')"
           echo "ONCALL_END_DATE=$END_DATE" >> $GITHUB_ENV
           export NEXT_START_DATE="$(date +'%Y-%m-%d' -d '+8 day')"
           echo "NEXT_ONCALL_START_DATE=$NEXT_START_DATE" >> $GITHUB_ENV
